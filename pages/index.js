@@ -66,7 +66,7 @@ export default function Home() {
   // 발급: https://www.koreaexim.go.kr → 오픈API → 무료 인증키 신청
   const fetchRates = useCallback(async () => {
     try {
-      const API_KEY = "SAMPLE_KEY"
+      const API_KEY = "9JiEUpxYu1XixUnXg8ku7Vi79i20btcF"
       const d = today().replace(/-/g, "")
       const url = `https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=${API_KEY}&searchdate=${d}&data=AP01`
       const res = await fetch(url)
