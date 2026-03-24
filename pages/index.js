@@ -61,21 +61,13 @@ export default function Home() {
   const [alerts, setAlerts] = useState([])
   const [toast, setToast] = useState("")
 
-  // ── 한국수출입은행 API ──
-  // 배포 후 아래 API_KEY를 본인 키로 교체
-  // 발급: https://www.koreaexim.go.kr → 오픈API → 무료 인증키 신청
+  // ── 환율 조회 (서버 API 경유 → CORS 우회) ──
   const fetchRates = useCallback(async () => {
     try {
-      const API_KEY = "9JiEUpxYu1XixUnXg8ku7Vi79i20btcF"
-      const d = today().replace(/-/g, "")
-      const url = `https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=${API_KEY}&searchdate=${d}&data=AP01`
-      const res = await fetch(url)
-      if (!res.ok) throw new Error("err")
+      const res = await fetch("/api/rates")
       const data = await res.json()
-      if (Array.isArray(data) && data.length > 0) {
-        const nr = { ...FALLBACK }
-        const map = { "USD": "USD", "JPY(100)": "JPY", "CNH": "CNY", "EUR": "EUR" }
-        data.forEach(it => { const m = map[it.cur_unit]; if (m) { const v = parseFloat(it.deal_bas_r?.replace(/,/g, "")); if (!isNaN(v)) nr[m] = v } })
+      if (data.success && Object.keys(data.rates).length > 0) {
+        const nr = { ...FALLBACK, ...data.rates }
         setRates(nr)
         setHist(p => { const h = {}; Object.keys(nr).forEach(k => { h[k] = [...(p[k] || []).slice(-13), nr[k]] }); return h })
         setSrc("live"); setUpd(new Date()); return
