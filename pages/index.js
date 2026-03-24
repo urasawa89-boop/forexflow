@@ -96,6 +96,7 @@ function Ad({ pos }) {
 export default function Home() {
   const [tab, setTab] = useState("dashboard")
   const [rates, setRates] = useState(FALLBACK)
+  const [detailed, setDetailed] = useState({})
   const [hist, setHist] = useState({ USD: [], JPY: [], CNY: [], EUR: [] })
   const [src, setSrc] = useState("loading")
   const [upd, setUpd] = useState(null)
@@ -105,6 +106,7 @@ export default function Home() {
   const [oceanData, setOceanData] = useState([])
   const [oceanUpd, setOceanUpd] = useState(null)
   const [oceanRegion, setOceanRegion] = useState("전체")
+  const [rateView, setRateView] = useState("card") // "card" or "table"
 
   // ── 환율 API ──
   const fetchRates = useCallback(async () => {
@@ -114,6 +116,7 @@ export default function Home() {
       if (data.success && Object.keys(data.rates).length > 0) {
         const nr = { ...FALLBACK, ...data.rates }
         setRates(nr)
+        if (data.detailed) setDetailed(data.detailed)
         setHist(p => { const h = {}; Object.keys(nr).forEach(k => { h[k] = [...(p[k] || []).slice(-13), nr[k]] }); return h })
         setSrc("live"); setUpd(new Date()); return
       }
@@ -211,16 +214,86 @@ export default function Home() {
   // ── Dashboard ──
   const Dash = () => <div>
     <Ad pos="top" />
-    {/* Exchange Rates */}
+    {/* Detailed Exchange Rates */}
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+      <div style={S.secT}>💱 수출입 환율</div>
+      <div style={{ display: "flex", gap: 4 }}>
+        <button style={{ ...S.bo, ...(rateView === "card" ? { background: "rgba(0,100,255,0.1)", color: "#4da6ff" } : {}) }} onClick={() => setRateView("card")}>카드</button>
+        <button style={{ ...S.bo, ...(rateView === "table" ? { background: "rgba(0,100,255,0.1)", color: "#4da6ff" } : {}) }} onClick={() => setRateView("table")}>표</button>
+      </div>
+    </div>
+
+    {rateView === "card" ? (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 14 }}>
       {CURRENCIES.map(c => {
         const h2 = hist[c.code] || []; const prev = h2.length >= 2 ? h2[h2.length - 2] : rates[c.code]; const d = rates[c.code] - prev; const p = prev ? ((d / prev) * 100).toFixed(2) : "0"; const up = d >= 0
-        return <div key={c.code} style={{ ...S.c, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div><div style={{ fontSize: 10.5, color: "rgba(255,255,255,0.3)", marginBottom: 2 }}>{c.flag} {c.code}</div><div style={{ fontSize: 17, fontWeight: 700 }}>{rates[c.code]}<span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>원</span></div><div style={{ fontSize: 10, color: up ? "#00d278" : "#ff5050" }}>{up ? "▲" : "▼"} {Math.abs(d).toFixed(2)} ({up ? "+" : ""}{p}%)</div></div>
-          <Spark data={h2.length > 1 ? h2 : [rates[c.code], rates[c.code]]} color={up ? "#00d278" : "#ff5050"} />
+        const det = detailed[c.code]
+        const tts = det?.tts || null
+        const ttb = det?.ttb || null
+        const spread = tts && ttb ? (tts - ttb).toFixed(2) : null
+        return <div key={c.code} style={S.c}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+            <div>
+              <div style={{ fontSize: 10.5, color: "rgba(255,255,255,0.3)", marginBottom: 2 }}>{c.flag} {c.code}</div>
+              <div style={{ fontSize: 17, fontWeight: 700 }}>{rates[c.code]}<span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>원</span></div>
+              <div style={{ fontSize: 10, color: up ? "#00d278" : "#ff5050" }}>{up ? "▲" : "▼"} {Math.abs(d).toFixed(2)} ({up ? "+" : ""}{p}%)</div>
+            </div>
+            <Spark data={h2.length > 1 ? h2 : [rates[c.code], rates[c.code]]} color={up ? "#00d278" : "#ff5050"} />
+          </div>
+          {/* 상세 환율 */}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 6 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, marginBottom: 3 }}>
+              <span style={{ color: "rgba(255,255,255,0.35)" }}>매매기준율</span>
+              <span style={{ fontWeight: 600 }}>{det?.base || rates[c.code]}</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, marginBottom: 3 }}>
+              <span style={{ color: "#ff8c00" }}>송금보낼때 <span style={{ fontSize: 9, opacity: 0.7 }}>(TTS·수입)</span></span>
+              <span style={{ fontWeight: 600, color: "#ff8c00" }}>{tts || "-"}</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, marginBottom: 3 }}>
+              <span style={{ color: "#00d278" }}>송금받을때 <span style={{ fontSize: 9, opacity: 0.7 }}>(TTB·수출)</span></span>
+              <span style={{ fontWeight: 600, color: "#00d278" }}>{ttb || "-"}</span>
+            </div>
+            {spread && <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.2)" }}>
+              <span>스프레드</span><span>{spread}</span>
+            </div>}
+          </div>
         </div>
       })}
     </div>
+    ) : (
+    /* 표 형태 */
+    <div style={{ ...S.c, marginBottom: 14, overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 3px" }}>
+        <thead><tr>
+          <th style={S.th}>통화</th>
+          <th style={S.th}>매매기준율</th>
+          <th style={{ ...S.th, color: "#ff8c00" }}>전신환매도(TTS) 수입·송금보낼때</th>
+          <th style={{ ...S.th, color: "#00d278" }}>전신환매입(TTB) 수출·송금받을때</th>
+          <th style={S.th}>스프레드</th>
+          <th style={S.th}>등락</th>
+        </tr></thead>
+        <tbody>{CURRENCIES.map(c => {
+          const det = detailed[c.code]
+          const h2 = hist[c.code] || []; const prev = h2.length >= 2 ? h2[h2.length - 2] : rates[c.code]; const d = rates[c.code] - prev; const up = d >= 0
+          const tts = det?.tts; const ttb = det?.ttb
+          const spread = tts && ttb ? (tts - ttb).toFixed(2) : "-"
+          return <tr key={c.code}>
+            <td style={{ ...S.td, borderRadius: "6px 0 0 6px", fontWeight: 600 }}>{c.flag} {c.code} <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.3)", fontSize: 11 }}>{c.name}</span></td>
+            <td style={{ ...S.td, fontWeight: 700, fontSize: 14 }}>{det?.base || rates[c.code]}</td>
+            <td style={{ ...S.td, color: "#ff8c00", fontWeight: 600 }}>{tts || "-"}</td>
+            <td style={{ ...S.td, color: "#00d278", fontWeight: 600 }}>{ttb || "-"}</td>
+            <td style={{ ...S.td, color: "rgba(255,255,255,0.3)" }}>{spread}</td>
+            <td style={{ ...S.td, borderRadius: "0 6px 6px 0", color: up ? "#00d278" : "#ff5050", fontWeight: 600 }}>{up ? "▲" : "▼"} {Math.abs(d).toFixed(2)}</td>
+          </tr>
+        })}</tbody>
+      </table>
+      <div style={{ marginTop: 8, padding: "8px 10px", background: "rgba(255,255,255,0.015)", borderRadius: 7, fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>
+        💡 <strong>TTS(전신환매도율)</strong> = 수입대금 송금 시 은행이 외화를 파는 가격 (원화→외화) · <strong>TTB(전신환매입율)</strong> = 수출대금 입금 시 은행이 외화를 사는 가격 (외화→원화)
+      </div>
+    </div>
+    )}
+
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, fontSize: 10.5 }}>
       <span style={{ color: "rgba(255,255,255,0.22)" }}>{src === "live" ? "🟢 한국수출입은행 실시간" : "🟡 시뮬레이션"}{upd && ` · ${upd.toLocaleTimeString("ko-KR")}`}</span>
       <div style={{ display: "flex", gap: 6 }}><button style={S.bo} onClick={() => setAlertM(true)}>🔔 환율알림</button><button style={S.bo} onClick={fetchRates}>↻ 새로고침</button></div>
