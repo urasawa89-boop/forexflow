@@ -1,3 +1,4 @@
+export const config = { regions: ["icn1"] }  // 한국 리전에서 실행
 // pages/api/rates.js
 // 한국수출입은행 환율 API - 상세 환율 (매매기준율 + 전신환매도/매입 + 현찰)
 //
