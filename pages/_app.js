@@ -4,28 +4,32 @@ import { useRouter } from 'next/router'
 const B = {
   orange: "#E8612D",
   orangeDim: "rgba(232,97,45,0.12)",
-  bg: "#2B3539",
   bgCardBorder: "rgba(255,255,255,0.07)",
-  text: "#E8E4DF",
   textDim: "rgba(232,228,223,0.45)",
-  textDimmer: "rgba(232,228,223,0.25)",
   headerBg: "#242D31",
 }
 
 function NavBar() {
   const router = useRouter()
   const path = router.pathname
+  const query = router.query
 
-  const tabs = [
-    { href: "/", label: "대시보드" },
-    { href: "/docs", label: "수입서류" },
-    { href: "/tools", label: "수입도구" },
+  // Determine active sub-tab for index page
+  const indexTab = query.tab || "dashboard"
+
+  const mainTabs = [
+    { href: "/", label: "대시보드", match: "/" },
+    { href: "/?tab=products", label: "품목·관세", match: "products" },
+    { href: "/?tab=ocean", label: "해양정보", match: "ocean" },
+    { href: "/?tab=calculator", label: "계산기", match: "calculator" },
+    { href: "/docs", label: "수입서류", match: "/docs" },
+    { href: "/tools", label: "수입도구", match: "/tools" },
   ]
 
   const isActive = (tab) => {
-    if (tab.href === "/" && path === "/") return true
-    if (tab.href === "/docs" && path === "/docs") return true
-    if (tab.href === "/tools" && path === "/tools") return true
+    if (path === "/" && tab.match === "/" && indexTab === "dashboard") return true
+    if (path === "/" && tab.match === indexTab) return true
+    if (tab.match === path) return true
     return false
   }
 
@@ -63,7 +67,7 @@ function NavBar() {
         paddingTop: 8,
         paddingBottom: 8,
       }}>
-        {tabs.map(tab => (
+        {mainTabs.map(tab => (
           <a key={tab.href} href={tab.href} style={nb(isActive(tab))}>{tab.label}</a>
         ))}
       </nav>
