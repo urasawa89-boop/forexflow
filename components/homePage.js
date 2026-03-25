@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { useRouter } from "next/router"
 
+// Shared main screen used by /, /products, /ocean, /calculator.
+
 const CURRENCIES = [
   { code: "USD", name: "미국 달러", symbol: "$", flag: "🇺🇸" },
   { code: "JPY", name: "일본 엔(100)", symbol: "¥", flag: "🇯🇵" },
