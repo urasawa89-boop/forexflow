@@ -21,12 +21,11 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
    const path = router.pathname
    const mainTabs = [
      { href: "/", label: "대시보드", match: "/" },
-
-    { href: "/products", label: "품목·관세", match: "/products" },
-    { href: "/ocean", label: "해양정보", match: "/ocean" },
-    { href: "/calculator", label: "계산기", match: "/calculator" },
-    { href: "/docs", label: "수입서류", match: "/docs" },
-    { href: "/tools", label: "수입도구", match: "/tools" },
+     { href: "/products", label: "품목·관세", match: "/products" },
+     { href: "/ocean", label: "해양정보", match: "/ocean" },
+     { href: "/calculator", label: "계산기", match: "/calculator" },
+     { href: "/docs", label: "수입서류", match: "/docs" },
+     { href: "/tools", label: "수입도구", match: "/tools" },
    ]
  
    const isActive = (tab) => {
@@ -57,7 +56,7 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
        alignItems: "center",
        gap: 8,
      }}>
-      <Link href="/"><img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} /></Link>
+       <Link href="/"><img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} /></Link>
        <nav style={{
          display: "flex",
          gap: 2,
@@ -85,7 +84,6 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
          <meta name="viewport" content="width=device-width, initial-scale=1" />
          <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23E8612D'/><text x='50' y='42' font-size='28' font-weight='900' text-anchor='middle' fill='white' font-family='Arial Black,Arial'>BAY</text><text x='50' y='72' font-size='22' font-weight='900' text-anchor='middle' fill='white' font-family='Arial Black,Arial'>WORKS</text></svg>" />
          <meta name="theme-color" content="#2B3539" />
--        <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
        </Head>
        <style jsx global>{`
          * { margin: 0; padding: 0; box-sizing: border-box; }
