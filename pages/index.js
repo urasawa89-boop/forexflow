@@ -503,6 +503,9 @@ export default function Home() {
         {[["dashboard", "📊 대시보드"], ["products", "🐟 품목·관세"], ["ocean", "🌊 해양정보"], ["calculator", "🔢 계산기"]].map(([k, l]) =>
           <button key={k} style={S.nb(tab === k)} onClick={() => setTab(k)}>{l}</button>
         )}
+        <a href="/docs" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>📋 수입서류</a>
+        <a href="/news" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>📰 뉴스</a>
+        <a href="/tools" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>🧮 수입도구</a>
       </nav>
     </header>
     <main style={S.mn}>
