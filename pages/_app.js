@@ -51,7 +51,7 @@ function NavBar() {
       alignItems: "center",
       gap: 8,
     }}>
-      <Link href="/"><img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} /></Link>
+      <Link href="/"><img src="/logo.png" alt="Bay Works" style={{ height: 100, width: "auto" }} /></Link>
       <nav style={{
         display: "flex",
         gap: 2,
