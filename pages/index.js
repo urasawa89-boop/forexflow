@@ -520,8 +520,8 @@ export default function Home() {
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
     <header style={S.hdr}>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <div style={{ width: 28, height: 28, borderRadius: 6, background: "linear-gradient(135deg,#0088ff,#00c6ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#fff" }}>FX</div>
-        <span style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>ForexFlow</span>
+        <div style={{ width: 28, height: 28, borderRadius: 6, background: "linear-gradient(135deg,#0088ff,#00c6ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "#fff" }}>BW</div>
+        <span style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>BayWorks</span>
         <span style={{ fontSize: 9, color: "rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.04)", padding: "1px 6px", borderRadius: 3 }}>v5</span>
       </div>
       <nav style={S.nav}>
