@@ -338,6 +338,31 @@ export default function Home() {
         )}
       </div>
     </div>}
+
+    {/* 수산물 뉴스 섹션 */}
+    <div style={{ ...S.c, marginTop: 16 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <div style={S.secT}>수산물 수출입 뉴스</div>
+        <a href="/news" style={{ fontSize: 11, color: "#4da6ff", textDecoration: "none" }}>전체보기 →</a>
+      </div>
+      {[
+        { source: "해양수산부", title: "2026년 수산식품 수출 목표 35억 달러… 김·참치·굴 집중 육성", date: "2026-03-24", tag: "정책", color: "#4da6ff" },
+        { source: "수입식품정보마루", title: "일본산 수입식품 방사능검사 결과 (3.13~3.19) — 전량 적합", date: "2026-03-20", tag: "검역", color: "#ff5050" },
+        { source: "FTA 포털", title: "RCEP 4년차 관세인하 적용… 일본산 수산물 세율 변동 안내", date: "2026-03-18", tag: "FTA", color: "#00d278" },
+        { source: "국립수산물품질관리원", title: "중국산 냉동 오징어 잔류약물 기준 초과 — 수입금지 조치", date: "2026-03-16", tag: "검역", color: "#ff5050" },
+        { source: "한국수산무역협회", title: "냉동새우 수입량 전년 대비 12% 증가… 동남아산 비중 확대", date: "2026-03-12", tag: "통계", color: "#bb86fc" },
+      ].map((n, i) => <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.03)" : "none" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 10, color: n.color, background: `${n.color}15`, padding: "1px 7px", borderRadius: 10, whiteSpace: "nowrap" }}>{n.tag}</span>
+          <span style={{ fontSize: 12, fontWeight: 500 }}>{n.title}</span>
+        </div>
+        <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
+          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{n.date}</div>
+          <div style={{ fontSize: 9.5, color: "rgba(255,255,255,0.15)" }}>{n.source}</div>
+        </div>
+      </div>)}
+    </div>
+
     <Ad pos="bottom" />
   </div>
 
@@ -500,12 +525,11 @@ export default function Home() {
         <span style={{ fontSize: 9, color: "rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.04)", padding: "1px 6px", borderRadius: 3 }}>v5</span>
       </div>
       <nav style={S.nav}>
-        {[["dashboard", "📊 대시보드"], ["products", "🐟 품목·관세"], ["ocean", "🌊 해양정보"], ["calculator", "🔢 계산기"]].map(([k, l]) =>
+        {[["dashboard", "대시보드"], ["products", "품목·관세"], ["ocean", "해양정보"], ["calculator", "계산기"]].map(([k, l]) =>
           <button key={k} style={S.nb(tab === k)} onClick={() => setTab(k)}>{l}</button>
         )}
-        <a href="/docs" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>📋 수입서류</a>
-        <a href="/news" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>📰 뉴스</a>
-        <a href="/tools" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>🧮 수입도구</a>
+        <a href="/docs" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>수입서류</a>
+        <a href="/tools" style={{ padding: "6px 13px", borderRadius: 7, background: "transparent", color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>수입도구</a>
       </nav>
     </header>
     <main style={S.mn}>
