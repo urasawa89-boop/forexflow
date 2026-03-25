@@ -178,6 +178,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
   const [oceanData, setOceanData] = useState([])
   const [oceanUpd, setOceanUpd] = useState(null)
   const [oceanRegion, setOceanRegion] = useState("전체")
+  const [oceanSource, setOceanSource] = useState("loading")
   const [rateView, setRateView] = useState("card") // "card" or "table"
   const [newsData, setNewsData] = useState([])
 
@@ -208,11 +209,17 @@ export default function HomePage({ initialTab = "dashboard" }) {
     try {
       const res = await fetch("/api/ocean")
       const data = await res.json()
-      if (data.success && data.stations) { setOceanData(data.stations); setOceanUpd(new Date()); return }
+      if (data.success && data.stations) {
+        setOceanData(data.stations)
+        setOceanUpd(new Date())
+        setOceanSource(data.source === "khoa" ? "live" : "sim")
+        return
+      }
       throw new Error("fallback")
     } catch {
       setOceanData(genOceanData())
       setOceanUpd(new Date())
+      setOceanSource("sim")
     }
   }, [])
 
@@ -507,7 +514,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
         <div style={S.secT}>🌊 전국 실시간 해양정보</div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
           <span style={{ fontSize: 10.5, color: "rgba(255,255,255,0.25)" }}>
-            {oceanUpd ? `🟡 시뮬레이션 · ${oceanUpd.toLocaleTimeString("ko-KR")}` : "로딩중..."} · 5분 자동갱신
+            {oceanUpd ? (oceanSource === "live" ? `🟢 국립해양조사원 실시간 · ${oceanUpd.toLocaleTimeString("ko-KR")}` : `🟡 시뮬레이션 · ${oceanUpd.toLocaleTimeString("ko-KR")}`) : "로딩중..."} · 5분 자동갱신
           </span>
           <button style={S.bo(false)} onClick={fetchOcean}>↻ 새로고침</button>
         </div>
@@ -562,9 +569,12 @@ export default function HomePage({ initialTab = "dashboard" }) {
         </div>)}
       </div>
 
-      <div style={{ ...S.c, marginTop: 16, padding: 12, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
+      {oceanSource !== "live" && <div style={{ ...S.c, marginTop: 16, padding: 12, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
         💡 <strong>바다누리 API 연동:</strong> <a href="https://www.khoa.go.kr/oceangrid/khoa/takepart/openapi/openApiKey.do" target="_blank" rel="noopener noreferrer" style={{ color: "#F07A4A" }}>khoa.go.kr → OPEN API → 인증키 신청</a> (무료) 후 <code style={{ color: "#F07A4A" }}>pages/api/ocean.js</code>에 키를 입력하면 실시간 조위·수온·풍향풍속·기온 데이터로 전환됩니다.
-      </div>
+      </div>}
+      {oceanSource === "live" && <div style={{ ...S.c, marginTop: 16, padding: 12, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
+        📡 <strong>국립해양조사원 실시간 관측 데이터</strong> · 조위관측소 15개소 · 5분마다 자동 갱신 · 출처: 바다누리 해양정보 서비스(khoa.go.kr)
+      </div>}
     </div>
   }
 
