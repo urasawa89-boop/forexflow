@@ -396,17 +396,11 @@ export default function Home() {
   }
 
   return <div style={S.app}>
-    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
-    <header style={S.hdr}>
-      <img src="/logo.png" alt="Bay Works" style={{ height: 100, width: "auto" }} />
-      <nav style={S.nav}>
-        {[["dashboard", "대시보드"], ["products", "품목·관세"], ["ocean", "해양정보"], ["calculator", "계산기"]].map(([k, l]) =>
-          <button key={k} style={S.nb(tab === k)} onClick={() => setTab(k)}>{l}</button>
-        )}
-        <a href="/docs" style={{ padding: "7px 14px", borderRadius: 7, color: B.textDim, fontSize: 12.5, textDecoration: "none" }}>수입서류</a>
-        <a href="/tools" style={{ padding: "7px 14px", borderRadius: 7, color: B.textDim, fontSize: 12.5, textDecoration: "none" }}>수입도구</a>
-      </nav>
-    </header>
+    <div style={{ display: "flex", justifyContent: "center", gap: 2, padding: "8px 20px", borderBottom: `1px solid ${B.bgCardBorder}`, flexWrap: "wrap" }}>
+      {[["dashboard", "대시보드"], ["products", "품목·관세"], ["ocean", "해양정보"], ["calculator", "계산기"]].map(([k, l]) =>
+        <button key={k} style={S.nb(tab === k)} onClick={() => setTab(k)}>{l}</button>
+      )}
+    </div>
     <main style={S.mn}>
       {tab === "dashboard" && <Dash />}
       {tab === "products" && <ProdTab />}
