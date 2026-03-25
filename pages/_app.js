@@ -1,9 +1,9 @@
  (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
 diff --git a/pages/_app.js b/pages/_app.js
-index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4cd9f83bb73a80c13fcf87854b71ed1c99596222 100644
+index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449212e2f48 100644
 --- a/pages/_app.js
 +++ b/pages/_app.js
-@@ -1,96 +1,90 @@
+@@ -1,101 +1,94 @@
  import Head from 'next/head'
 +import Link from 'next/link'
  import { useRouter } from 'next/router'
@@ -96,7 +96,7 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4cd9f83bb73a80c13fcf87854b71ed1c
          <meta name="viewport" content="width=device-width, initial-scale=1" />
          <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23E8612D'/><text x='50' y='42' font-size='28' font-weight='900' text-anchor='middle' fill='white' font-family='Arial Black,Arial'>BAY</text><text x='50' y='72' font-size='22' font-weight='900' text-anchor='middle' fill='white' font-family='Arial Black,Arial'>WORKS</text></svg>" />
          <meta name="theme-color" content="#2B3539" />
-         <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+-        <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
        </Head>
        <style jsx global>{`
          * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -106,6 +106,11 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4cd9f83bb73a80c13fcf87854b71ed1c
          ::-webkit-scrollbar-track { background: transparent; }
          ::-webkit-scrollbar-thumb { background: rgba(232,97,45,0.3); border-radius: 3px; }
        `}</style>
+       <NavBar />
+       <Component {...pageProps} />
+     </>
+   )
+ }
  
 EOF
 )
