@@ -11,38 +11,90 @@ const CURRENCIES = [
 ]
 const FALLBACK = { USD: 1385.5, JPY: 921.0, CNY: 190.3, EUR: 1510.2 }
 
+// ── 수산물 품목 DB (관세청 공식 데이터 2026.02.11 기준) ──
+// 출처: 관세청 품목번호별 관세율표 | ※ 실제 적용세율은 UNIPASS에서 최종 확인
 const SEAFOOD_DB = [
-  { id: "kim_dried", name: "마른김", hs: "2008.99", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
-  { id: "kim_seasoned", name: "조미김", hs: "2008.99", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
+  // ── 활어 (0301) ──
+  { id: "live_trout", name: "활 송어", hs: "0301.11", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_eel", name: "활 장어(뱀장어)", hs: "0301.19", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_carp", name: "활 잉어", hs: "0301.93", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_flatfish", name: "활 넙치(광어)", hs: "0301.99", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_seabream", name: "활 참돔", hs: "0301.99", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_silchi", name: "활 실치(뱅어)", hs: "0301.99", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  // ── 신선냉장 어류 (0302) ──
+  { id: "fresh_salmon", name: "신선 연어", hs: "0302.14", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_tuna", name: "신선 참치", hs: "0302.31", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_flatfish", name: "신선 넙치(광어)", hs: "0302.29", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_herring", name: "신선 청어", hs: "0302.41", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_anchovy", name: "신선 멸치", hs: "0302.42", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_sardine", name: "신선 정어리", hs: "0302.43", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_mackerel", name: "신선 고등어", hs: "0302.44", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_horsemackerel", name: "신선 전갱이(메가리)", hs: "0302.49", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_cod", name: "신선 대구", hs: "0302.51", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_pollock", name: "신선 명태", hs: "0302.52", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_eel", name: "신선 장어(뱀장어)", hs: "0302.74", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_monkfish", name: "신선 아귀", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_toothfish", name: "신선 메로(이빨고기)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_silchi", name: "신선 실치(뱅어치어)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_kanari", name: "신선 까나리(양미리)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  // ── 냉동 어류 (0303) ──
+  { id: "frozen_salmon", name: "냉동 연어", hs: "0303.14", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_tuna", name: "냉동 참치", hs: "0303.31", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_herring", name: "냉동 청어", hs: "0303.41", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_anchovy", name: "냉동 멸치", hs: "0303.42", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_sardine", name: "냉동 정어리", hs: "0303.43", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_mackerel", name: "냉동 고등어", hs: "0303.44", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_horsemackerel", name: "냉동 전갱이(메가리)", hs: "0303.49", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_cod", name: "냉동 대구", hs: "0303.63", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_pollock", name: "냉동 명태", hs: "0303.67", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_monkfish", name: "냉동 아귀", hs: "0303.89", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_kanari", name: "냉동 까나리", hs: "0303.89", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  // ── 어류 필레 (0304) ──
+  { id: "fillet_salmon", name: "연어 필레(신선)", hs: "0304.41", tariff: 20, unit: "kg", emoji: "🍣", group: "필레" },
+  { id: "fillet_salmon_frozen", name: "연어 필레(냉동)", hs: "0304.81", tariff: 10, unit: "kg", emoji: "🍣", group: "필레" },
+  // ── 건조/염장/훈제 (0305) ──
+  { id: "fish_roe", name: "어란(명란 등)", hs: "0305.20", tariff: 20, unit: "kg", emoji: "🟠", group: "가공품" },
+  { id: "smoked_salmon", name: "훈제 연어", hs: "0305.41", tariff: 20, unit: "kg", emoji: "🍣", group: "가공품" },
+  { id: "dried_pollock", name: "건조 명태(황태/북어)", hs: "0305.59", tariff: 20, unit: "kg", emoji: "🐡", group: "가공품" },
+  // ── 갑각류 (0306) ──
+  { id: "frozen_lobster", name: "냉동 랍스터", hs: "0306.11", tariff: 20, unit: "kg", emoji: "🦞", group: "갑각류" },
+  { id: "frozen_snow_crab", name: "냉동 대게", hs: "0306.12", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "frozen_blue_crab", name: "냉동 꽃게", hs: "0306.14", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "frozen_shrimp", name: "냉동 새우(흰다리)", hs: "0306.17", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  { id: "frozen_gonjeng", name: "냉동 곤쟁이(젓새우)", hs: "0306.19", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  { id: "live_lobster", name: "활 랍스터", hs: "0306.31", tariff: 20, unit: "kg", emoji: "🦞", group: "갑각류" },
+  { id: "live_blue_crab", name: "활 꽃게", hs: "0306.33", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "live_snow_crab", name: "활 대게", hs: "0306.34", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "live_shrimp", name: "활 새우", hs: "0306.36", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  { id: "live_gonjeng", name: "활 곤쟁이", hs: "0306.39", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  // ── 연체동물 (0307) ──
+  { id: "oyster_fresh", name: "활/신선 굴", hs: "0307.11", tariff: 20, unit: "kg", emoji: "🦪", group: "패류" },
+  { id: "scallop_fresh", name: "활/신선 가리비(관자)", hs: "0307.21", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
+  { id: "squid_fresh", name: "활/신선 오징어", hs: "0307.42", tariff: 10, unit: "kg", emoji: "🦑", group: "연체류" },
+  { id: "squid_frozen", name: "냉동 오징어", hs: "0307.43", tariff: 10, unit: "kg", emoji: "🦑", group: "연체류" },
+  { id: "octopus_fresh", name: "활/신선 문어", hs: "0307.52", tariff: 20, unit: "kg", emoji: "🐙", group: "연체류" },
+  { id: "clam_fresh", name: "활/신선 조개(바지락)", hs: "0307.71", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
+  { id: "abalone_fresh", name: "활/신선 전복", hs: "0307.81", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
+  // ── 수생무척추동물 (0308) ──
+  { id: "sea_cucumber", name: "활/신선 해삼", hs: "0308.11", tariff: 20, unit: "kg", emoji: "🟤", group: "기타" },
+  { id: "sea_urchin", name: "활/신선 성게", hs: "0308.21", tariff: 20, unit: "kg", emoji: "🟤", group: "기타" },
+  // ── 해조류 (1212) ──
+  { id: "gonori", name: "고노리", hs: "1212.21", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
   { id: "miyeok", name: "미역", hs: "1212.21", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
   { id: "dashima", name: "다시마", hs: "1212.21", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
-  { id: "crab_meat", name: "게살", hs: "1605.10", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
-  { id: "king_crab", name: "킹크랩", hs: "0306.12", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
-  { id: "snow_crab", name: "대게", hs: "0306.14", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
-  { id: "shrimp", name: "새우", hs: "0306.17", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
-  { id: "lobster", name: "랍스터", hs: "0306.11", tariff: 20, unit: "kg", emoji: "🦞", group: "갑각류" },
-  { id: "salmon", name: "연어", hs: "0302.14", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "tuna", name: "참치", hs: "0302.31", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "flatfish", name: "넙치(광어)", hs: "0302.29", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "toothfish", name: "이빨고기(메로)", hs: "0302.89", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "eel", name: "장어", hs: "0302.74", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "cod", name: "대구", hs: "0302.51", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "pollock", name: "명태", hs: "0302.52", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "mackerel", name: "고등어", hs: "0302.44", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
-  { id: "squid", name: "오징어", hs: "0307.42", tariff: 20, unit: "kg", emoji: "🦑", group: "연체류" },
-  { id: "octopus", name: "문어", hs: "0307.52", tariff: 20, unit: "kg", emoji: "🐙", group: "연체류" },
-  { id: "oyster", name: "굴", hs: "0307.11", tariff: 20, unit: "kg", emoji: "🦪", group: "패류" },
-  { id: "abalone", name: "전복", hs: "0307.81", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
-  { id: "scallop", name: "가리비(관자)", hs: "0307.21", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
-  { id: "clam", name: "조개류", hs: "0307.71", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
-  { id: "sea_cucumber", name: "해삼", hs: "0308.11", tariff: 20, unit: "kg", emoji: "🟤", group: "기타" },
-  { id: "fish_cake", name: "어묵", hs: "1604.20", tariff: 20, unit: "kg", emoji: "🍥", group: "가공품" },
-  { id: "dried_fish", name: "건어물", hs: "0305.59", tariff: 20, unit: "kg", emoji: "🐡", group: "가공품" },
-  { id: "fish_roe", name: "어란(명란)", hs: "0305.20", tariff: 20, unit: "kg", emoji: "🟠", group: "가공품" },
-  { id: "canned_tuna", name: "참치캔", hs: "1604.14", tariff: 20, unit: "box", emoji: "🥫", group: "가공품" },
+  { id: "kim", name: "김(마른김/조미김)", hs: "2008.99", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
+  // ── 조제수산물 (1604, 1605) ──
+  { id: "canned_tuna", name: "참치캔", hs: "1604.14", tariff: 20, unit: "box", emoji: "🥫", group: "조제품" },
+  { id: "fish_cake", name: "어묵류", hs: "1604.20", tariff: 20, unit: "kg", emoji: "🍥", group: "조제품" },
+  { id: "prep_crab", name: "조제 게살", hs: "1605.10", tariff: 20, unit: "kg", emoji: "🦀", group: "조제품" },
+  { id: "prep_shrimp", name: "조제 새우", hs: "1605.21", tariff: 20, unit: "kg", emoji: "🦐", group: "조제품" },
+  { id: "prep_oyster", name: "조제 굴", hs: "1605.51", tariff: 20, unit: "kg", emoji: "🦪", group: "조제품" },
+  { id: "prep_abalone", name: "조제 전복", hs: "1605.53", tariff: 20, unit: "kg", emoji: "🐚", group: "조제품" },
+  { id: "prep_squid", name: "조제 오징어/문어", hs: "1605.54", tariff: 20, unit: "kg", emoji: "🦑", group: "조제품" },
+  // ── 기타 ──
   { id: "other", name: "기타 수산물", hs: "-", tariff: 0, unit: "kg", emoji: "📦", group: "기타" },
 ]
-const GROUPS = ["전체", "어류", "갑각류", "연체류", "패류", "해조류", "가공품", "기타"]
+const GROUPS = ["전체", "활어", "어류", "냉동어류", "필레", "갑각류", "연체류", "패류", "해조류", "가공품", "조제품", "기타"]
 
 // 주요 해양관측소 (국립해양조사원 관측소 코드)
 const OCEAN_STATIONS = [
@@ -91,17 +143,8 @@ function Spark({ data, color, w = 76, h = 26 }) {
 }
 
 function Ad({ pos }) {
-  useEffect(() => {
-    try { (window.adsbygoogle = window.adsbygoogle || []).push({}) } catch (e) {}
-  }, [])
-
-  return <div style={{ marginBottom: pos === "top" ? 16 : 0, marginTop: pos === "bottom" ? 16 : 0 }}>
-    <ins className="adsbygoogle"
-      style={{ display: "block" }}
-      data-ad-client="ca-pub-3106394601395095"
-      data-ad-slot="여기에_광고단위_슬롯ID"
-      data-ad-format="auto"
-      data-full-width-responsive="true" />
+  return <div style={{ background: "linear-gradient(135deg,#1a1a2e,#16213e)", border: "1px dashed rgba(255,255,255,0.1)", borderRadius: 10, padding: "12px 20px", textAlign: "center", color: "rgba(255,255,255,0.25)", fontSize: 11, letterSpacing: 1, marginBottom: pos === "top" ? 16 : 0, marginTop: pos === "bottom" ? 16 : 0 }}>
+    AD · Google AdSense / 카카오 애드핏
   </div>
 }
 
@@ -333,9 +376,9 @@ export default function HomePage({ initialTab = "dashboard" }) {
 
     {/* Quick HS Code Lookup */}
     <div style={{ ...S.c, marginBottom: 16 }}>
-      <div style={S.secT}>📋 주요 수산물 HS코드 · 관세율 (빠른조회)</div>
+      <div style={S.secT}>📋 주요 수산물 HS코드 · 관세율 (빠른조회) <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,0.25)" }}>관세청 공식 데이터 2026.02.11 기준</span></div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8 }}>
-        {SEAFOOD_DB.filter(p => p.hs !== "-").slice(0, 16).map(p =>
+        {SEAFOOD_DB.filter(p => p.hs !== "-").slice(0, 20).map(p =>
           <div key={p.id} style={{ background: "rgba(255,255,255,0.015)", borderRadius: 8, padding: "8px 10px", border: "1px solid rgba(255,255,255,0.03)" }}>
             <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 3 }}>{p.emoji} {p.name}</div>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5 }}>
@@ -402,10 +445,10 @@ export default function HomePage({ initialTab = "dashboard" }) {
       return true
     })
     return <div>
-      <div style={S.secT}>🐟 수산물 HS코드 · 관세율표</div>
+      <div style={S.secT}>🐟 수산물 HS코드 · 관세율표 <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,0.25)" }}>관세청 공식 데이터 2026.02.11 기준 · 총 {SEAFOOD_DB.filter(p=>p.hs!=="-").length}개 품목</span></div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
         <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-          {GROUPS.map(g => <button key={g} style={{ ...S.bo, fontSize: 10.5, padding: "4px 10px", ...(grp === g ? { background: "rgba(232,97,45,0.12)", color: "#E8612D" } : {}) }} onClick={() => setGrp(g)}>{g}</button>)}
+          {GROUPS.map(g => <button key={g} style={{ ...S.bo(grp === g), fontSize: 10.5, padding: "4px 10px" }} onClick={() => setGrp(g)}>{g}</button>)}
         </div>
         <input style={{ ...S.inp, width: 200 }} placeholder="🔍 품목명 또는 HS코드 검색" value={search} onChange={e => setSearch(e.target.value)} />
       </div>
