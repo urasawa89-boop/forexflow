@@ -6,8 +6,8 @@
 // ★ 네이버 API 키 발급: https://developers.naver.com → Application 등록 → 검색 API 선택
 //    - Client ID / Client Secret 발급 후 아래에 입력
 
-const NAVER_CLIENT_ID = "YOUR_NAVER_CLIENT_ID"       // ← 여기에 입력
-const NAVER_CLIENT_SECRET = "YOUR_NAVER_CLIENT_SECRET" // ← 여기에 입력
+const NAVER_CLIENT_ID = "blP_yA_HdI7GIBZAd2Rc"       // ← 여기에 입력
+const NAVER_CLIENT_SECRET = "jBw9uNuVkg" // ← 여기에 입력
 
 // 수산물 관련 검색 키워드 (네이버 뉴스용)
 const SEARCH_QUERIES = [
