@@ -179,6 +179,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
   const [oceanUpd, setOceanUpd] = useState(null)
   const [oceanRegion, setOceanRegion] = useState("전체")
   const [rateView, setRateView] = useState("card") // "card" or "table"
+  const [newsData, setNewsData] = useState([])
 
   // ── 환율 API ──
   const fetchRates = useCallback(async () => {
@@ -215,9 +216,20 @@ export default function HomePage({ initialTab = "dashboard" }) {
     }
   }, [])
 
-  useEffect(() => { fetchRates(); fetchOcean() }, [])
+  useEffect(() => { fetchRates(); fetchOcean(); fetchNews() }, [])
   useEffect(() => { const iv = setInterval(fetchRates, 60000); return () => clearInterval(iv) }, [fetchRates])
   useEffect(() => { const iv = setInterval(fetchOcean, 300000); return () => clearInterval(iv) }, [fetchOcean])
+
+  // ── 뉴스 fetch ──
+  const fetchNews = useCallback(async () => {
+    try {
+      const res = await fetch("/api/news")
+      const data = await res.json()
+      if (data.success && data.news && data.news.length > 0) {
+        setNewsData(data.news.slice(0, 5))
+      }
+    } catch {}
+  }, [])
 
   const S = {
     app: { fontFamily: "'Pretendard',sans-serif", background: B.bg, color: B.text, minHeight: "100vh", fontSize: 14 },
@@ -364,7 +376,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
     )}
 
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, fontSize: 10.5 }}>
-      <span style={{ color: "rgba(255,255,255,0.22)" }}>{src === "live" ? "🟢 한국수출입은행 실시간" : "🟡 시뮬레이션"}{upd && ` · ${upd.toLocaleTimeString("ko-KR")}`}</span>
+      <span style={{ color: "rgba(255,255,255,0.22)" }}>{src === "live" ? "🟢 은행 고시 환율 (송금 기준) · 네이버 실시간 시세와 5~15원 차이 가능" : "🟡 시뮬레이션 (API 연결 대기)"}{upd && ` · ${upd.toLocaleTimeString("ko-KR")}`}</span>
       <div style={{ display: "flex", gap: 6 }}><button style={S.bo(false)} onClick={() => setAlertM(true)}>🔔 환율알림</button><button style={S.bo(false)} onClick={fetchRates}>↻ 새로고침</button></div>
     </div>
 
@@ -408,28 +420,32 @@ export default function HomePage({ initialTab = "dashboard" }) {
       </div>
     </div>}
 
-    {/* 수산물 뉴스 섹션 */}
+    {/* 수산물 뉴스 섹션 — /api/news 실시간 연동 */}
     <div style={{ ...S.c, marginTop: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <div style={S.secT}>수산물 수출입 뉴스</div>
+        <div style={S.secT}>📰 수산물 수출입 뉴스</div>
         <a href="/news" style={{ fontSize: 11, color: "#E8612D", textDecoration: "none" }}>전체보기 →</a>
       </div>
-      {[
-        { source: "해양수산부", title: "2026년 수산식품 수출 목표 35억 달러… 김·참치·굴 집중 육성", date: "2026-03-24", tag: "정책", color: "#E8612D" },
-        { source: "수입식품정보마루", title: "일본산 수입식품 방사능검사 결과 (3.13~3.19) — 전량 적합", date: "2026-03-20", tag: "검역", color: "#EF5350" },
-        { source: "FTA 포털", title: "RCEP 4년차 관세인하 적용… 일본산 수산물 세율 변동 안내", date: "2026-03-18", tag: "FTA", color: "#4CAF50" },
-        { source: "국립수산물품질관리원", title: "중국산 냉동 오징어 잔류약물 기준 초과 — 수입금지 조치", date: "2026-03-16", tag: "검역", color: "#EF5350" },
-        { source: "한국수산무역협회", title: "냉동새우 수입량 전년 대비 12% 증가… 동남아산 비중 확대", date: "2026-03-12", tag: "통계", color: "#bb86fc" },
-      ].map((n, i) => <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.03)" : "none" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 10, color: n.color, background: `${n.color}15`, padding: "1px 7px", borderRadius: 10, whiteSpace: "nowrap" }}>{n.tag}</span>
-          <span style={{ fontSize: 12, fontWeight: 500 }}>{n.title}</span>
+      {newsData.length > 0 ? newsData.map((n, i) => {
+        const catColors = { "정책": "#E8612D", "검역": "#EF5350", "관세": "#ffd666", "통계": "#bb86fc", "수출": "#4CAF50", "어황": "#03dac6", "지원사업": "#81c784", "규제": "#e57373", "일반": "rgba(255,255,255,0.3)" }
+        const color = catColors[n.category] || "rgba(255,255,255,0.3)"
+        return <div key={n.id || i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < newsData.length - 1 ? "1px solid rgba(255,255,255,0.03)" : "none" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }}>
+            <span style={{ fontSize: 10, color, background: `${color}15`, padding: "1px 7px", borderRadius: 10, whiteSpace: "nowrap" }}>{n.category}</span>
+            {n.link ? (
+              <a href={n.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, fontWeight: 500, color: "#E8E4DF", textDecoration: "none", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.title}</a>
+            ) : (
+              <span style={{ fontSize: 12, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.title}</span>
+            )}
+          </div>
+          <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{n.date}</div>
+            <div style={{ fontSize: 9.5, color: "rgba(255,255,255,0.15)" }}>{n.sourceName || n.source}</div>
+          </div>
         </div>
-        <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
-          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{n.date}</div>
-          <div style={{ fontSize: 9.5, color: "rgba(255,255,255,0.15)" }}>{n.source}</div>
-        </div>
-      </div>)}
+      }) : (
+        <div style={{ padding: "12px 0", fontSize: 12, color: "rgba(255,255,255,0.25)", textAlign: "center" }}>뉴스를 불러오는 중...</div>
+      )}
     </div>
 
     <Ad pos="bottom" />
@@ -547,7 +563,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
       </div>
 
       <div style={{ ...S.c, marginTop: 16, padding: 12, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
-        💡 <strong>바다누리 API 연동 안내:</strong> 국립해양조사원(khoa.go.kr) → 바다누리 OPEN API → 무료 인증키 발급 후 <code style={{ color: "#F07A4A" }}>pages/api/ocean.js</code> 파일을 추가하면 실시간 데이터로 전환됩니다. 조위, 파고, 수온, 풍향/풍속, 조류 정보 제공.
+        💡 <strong>바다누리 API 연동:</strong> <a href="https://www.khoa.go.kr/oceangrid/khoa/takepart/openapi/openApiKey.do" target="_blank" rel="noopener noreferrer" style={{ color: "#F07A4A" }}>khoa.go.kr → OPEN API → 인증키 신청</a> (무료) 후 <code style={{ color: "#F07A4A" }}>pages/api/ocean.js</code>에 키를 입력하면 실시간 조위·수온·풍향풍속·기온 데이터로 전환됩니다.
       </div>
     </div>
   }
