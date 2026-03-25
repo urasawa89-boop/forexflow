@@ -140,8 +140,8 @@ export default function Home() {
 
   const S = {
     app: { fontFamily: "'Pretendard',sans-serif", background: B.bg, color: B.text, minHeight: "100vh", fontSize: 14 },
-    hdr: { background: B.headerBg, borderBottom: `1px solid ${B.bgCardBorder}`, padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 54, flexWrap: "wrap", gap: 8 },
-    nav: { display: "flex", gap: 2, flexWrap: "wrap" },
+    hdr: { background: B.headerBg, borderBottom: `1px solid ${B.bgCardBorder}`, padding: "10px 20px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
+    nav: { display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center", borderTop: `1px solid ${B.bgCardBorder}`, width: "100%", paddingTop: 8, paddingBottom: 8 },
     nb: (a) => ({ padding: "7px 14px", borderRadius: 7, border: "none", background: a ? B.orangeDim : "transparent", color: a ? B.orange : B.textDim, fontWeight: a ? 600 : 400, fontSize: 12.5, cursor: "pointer" }),
     mn: { maxWidth: 1160, margin: "0 auto", padding: "16px 20px" },
     c: { background: B.bgCard, border: `1px solid ${B.bgCardBorder}`, borderRadius: 11, padding: 15 },
@@ -398,9 +398,7 @@ export default function Home() {
   return <div style={S.app}>
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
     <header style={S.hdr}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <img src="/logo.png" alt="Bay Works" style={{ height: 100, width: "auto" }} />
-      </div>
+      <img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} />
       <nav style={S.nav}>
         {[["dashboard", "대시보드"], ["products", "품목·관세"], ["ocean", "해양정보"], ["calculator", "계산기"]].map(([k, l]) =>
           <button key={k} style={S.nb(tab === k)} onClick={() => setTab(k)}>{l}</button>
