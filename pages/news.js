@@ -4,7 +4,7 @@ import Link from "next/link"
 
 // 주요 수산물 뉴스 소스
 const NEWS_SOURCES = [
-  { id: "mof", name: "해양수산부", icon: "🏛️", url: "https://www.mof.go.kr/list.do?menuKey=376&boardKey=10", color: "#0066ff" },
+  { id: "mof", name: "해양수산부", icon: "🏛️", url: "https://www.mof.go.kr/list.do?menuKey=376&boardKey=10", color: "#E8612D" },
   { id: "kfta", name: "한국수산무역협회", icon: "🐟", url: "https://www.kfta.net", color: "#00a651" },
   { id: "nfqs", name: "국립수산물품질관리원", icon: "🔬", url: "https://www.nfqs.go.kr", color: "#ff8c00" },
   { id: "impfood", name: "수입식품정보마루", icon: "📦", url: "https://impfood.mfds.go.kr", color: "#e91e63" },
@@ -47,26 +47,26 @@ export default function NewsPage() {
   const important = news.filter(n => n.important)
 
   const S = {
-    app: { fontFamily: "'Pretendard',sans-serif", background: "#08080f", color: "#e4e4ec", minHeight: "100vh", fontSize: 14 },
-    hdr: { background: "#0c0c16", borderBottom: "1px solid rgba(255,255,255,0.05)", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52, flexWrap: "wrap", gap: 8 },
+    app: { fontFamily: "'Pretendard',sans-serif", background: "#2B3539", color: "#E8E4DF", minHeight: "100vh", fontSize: 14 },
+    hdr: { background: "#242D31", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 52, flexWrap: "wrap", gap: 8 },
     mn: { maxWidth: 1160, margin: "0 auto", padding: "16px 20px" },
-    c: { background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 11, padding: 15 },
-    bo: (a) => ({ padding: "5px 11px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.08)", background: a ? "rgba(0,100,255,0.12)" : "transparent", color: a ? "#4da6ff" : "rgba(255,255,255,0.45)", fontSize: 11, cursor: "pointer", fontWeight: a ? 600 : 400 }),
+    c: { background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 11, padding: 15 },
+    bo: (a) => ({ padding: "5px 11px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.07)", background: a ? "rgba(232,97,45,0.12)" : "transparent", color: a ? "#E8612D" : "rgba(255,255,255,0.45)", fontSize: 11, cursor: "pointer", fontWeight: a ? 600 : 400 }),
   }
 
   const getCatColor = (cat) => {
-    const colors = { "정책": "#4da6ff", "검역": "#ff5050", "관세": "#ffd666", "FTA": "#00d278", "통계": "#bb86fc", "어황": "#03dac6", "수출규제": "#ff8c00", "제도": "#64b5f6", "지원사업": "#81c784", "규제": "#e57373", "시장분석": "#ce93d8" }
+    const colors = { "정책": "#E8612D", "검역": "#ff5050", "관세": "#ffd666", "FTA": "#4CAF50", "통계": "#bb86fc", "어황": "#03dac6", "수출규제": "#ff8c00", "제도": "#64b5f6", "지원사업": "#81c784", "규제": "#e57373", "시장분석": "#ce93d8" }
     return colors[cat] || "rgba(255,255,255,0.3)"
   }
 
   return <div style={S.app}>
-    <Head><title>수산물 뉴스 - ForexFlow</title></Head>
+    <Head><title>수산물 뉴스 - Bay Works</title></Head>
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
     <header style={S.hdr}>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 6, background: "linear-gradient(135deg,#0088ff,#00c6ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#fff" }}>FX</div>
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>ForexFlow</span>
+          <img src="/logo.png" alt="Bay Works" style={{ height: 36, width: "auto" }}
+          />
         </Link>
         <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>/ 수산물 뉴스</span>
       </div>
@@ -110,7 +110,7 @@ export default function NewsPage() {
         <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
           {CATEGORIES.map(c => <button key={c} style={S.bo(filter === c)} onClick={() => setFilter(c)}>{c}</button>)}
         </div>
-        <select style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#e4e4ec", fontSize: 11.5 }} value={srcFilter} onChange={e => setSrcFilter(e.target.value)}>
+        <select style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)", color: "#E8E4DF", fontSize: 11.5 }} value={srcFilter} onChange={e => setSrcFilter(e.target.value)}>
           <option value="all">모든 소스</option>
           {NEWS_SOURCES.map(s => <option key={s.id} value={s.id}>{s.icon} {s.name}</option>)}
         </select>
