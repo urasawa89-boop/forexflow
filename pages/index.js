@@ -398,7 +398,7 @@ export default function Home() {
   return <div style={S.app}>
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
     <header style={S.hdr}>
-      <img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} />
+      <img src="/logo.png" alt="Bay Works" style={{ height: 100, width: "auto" }} />
       <nav style={S.nav}>
         {[["dashboard", "대시보드"], ["products", "품목·관세"], ["ocean", "해양정보"], ["calculator", "계산기"]].map(([k, l]) =>
           <button key={k} style={S.nb(tab === k)} onClick={() => setTab(k)}>{l}</button>
