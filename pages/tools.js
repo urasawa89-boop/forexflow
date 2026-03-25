@@ -27,15 +27,15 @@ export default function ToolsPage() {
   }, [])
 
   const S = {
-    app: { fontFamily: "'Pretendard',sans-serif", background: "#08080f", color: "#e4e4ec", minHeight: "100vh", fontSize: 14 },
-    hdr: { background: "#0c0c16", borderBottom: "1px solid rgba(255,255,255,0.05)", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52, flexWrap: "wrap", gap: 8 },
+    app: { fontFamily: "'Pretendard',sans-serif", background: "#2B3539", color: "#E8E4DF", minHeight: "100vh", fontSize: 14 },
+    hdr: { background: "#242D31", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 52, flexWrap: "wrap", gap: 8 },
     mn: { maxWidth: 1160, margin: "0 auto", padding: "16px 20px" },
-    c: { background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 11, padding: 15 },
-    inp: { width: "100%", padding: "8px 12px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#e4e4ec", fontSize: 13, outline: "none", boxSizing: "border-box" },
-    sel: { width: "100%", padding: "8px 12px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#e4e4ec", fontSize: 13, outline: "none", boxSizing: "border-box" },
-    lb: { display: "block", fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 4, fontWeight: 500 },
-    btn: { padding: "9px 18px", borderRadius: 8, border: "none", background: "linear-gradient(135deg,#0066ff,#0050dd)", color: "#fff", fontWeight: 600, fontSize: 12, cursor: "pointer" },
-    bo: (a) => ({ padding: "7px 14px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.08)", background: a ? "rgba(0,100,255,0.12)" : "transparent", color: a ? "#4da6ff" : "rgba(255,255,255,0.5)", fontSize: 12, cursor: "pointer", fontWeight: a ? 600 : 400 }),
+    c: { background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 11, padding: 15 },
+    inp: { width: "100%", padding: "8px 12px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)", color: "#E8E4DF", fontSize: 13, outline: "none", boxSizing: "border-box" },
+    sel: { width: "100%", padding: "8px 12px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)", color: "#E8E4DF", fontSize: 13, outline: "none", boxSizing: "border-box" },
+    lb: { display: "block", fontSize: 11, color: "rgba(232,228,223,0.45)", marginBottom: 4, fontWeight: 500 },
+    btn: { padding: "9px 18px", borderRadius: 8, border: "none", background: "linear-gradient(135deg,#E8612D,#F07A4A)", color: "#fff", fontWeight: 600, fontSize: 12, cursor: "pointer" },
+    bo: (a) => ({ padding: "7px 14px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.07)", background: a ? "rgba(232,97,45,0.12)" : "transparent", color: a ? "#E8612D" : "rgba(255,255,255,0.5)", fontSize: 12, cursor: "pointer", fontWeight: a ? 600 : 400 }),
     row: { display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: 12.5, borderBottom: "1px solid rgba(255,255,255,0.03)" },
   }
 
@@ -94,28 +94,28 @@ export default function ToolsPage() {
         <div>
           <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12 }}>📊 수입원가 분석 {src === "live" ? "🟢" : "🟡"}</div>
           <div style={{ background: "rgba(255,255,255,0.015)", borderRadius: 10, padding: 14, marginBottom: 12 }}>
-            <div style={S.row}><span style={{ color: "rgba(255,255,255,0.4)" }}>물품가격 (CIF 원화환산)</span><span style={{ fontWeight: 600 }}>{fmtKRW(cifKRW)}</span></div>
-            <div style={S.row}><span style={{ color: "rgba(255,255,255,0.4)" }}>┗ 외화금액</span><span>{fmtF(Number(f.amount) || 0, f.cur)}</span></div>
-            <div style={S.row}><span style={{ color: "rgba(255,255,255,0.4)" }}>┗ 적용환율</span><span>{rates[f.cur]}</span></div>
-            <div style={{ ...S.row, borderBottom: "2px solid rgba(255,255,255,0.05)" }}><span style={{ color: "#ff8c00" }}>관세 ({f.tariffRate}%)</span><span style={{ color: "#ff8c00", fontWeight: 600 }}>+ {fmtKRW(tariff)}</span></div>
+            <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>물품가격 (CIF 원화환산)</span><span style={{ fontWeight: 600 }}>{fmtKRW(cifKRW)}</span></div>
+            <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>┗ 외화금액</span><span>{fmtF(Number(f.amount) || 0, f.cur)}</span></div>
+            <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>┗ 적용환율</span><span>{rates[f.cur]}</span></div>
+            <div style={{ ...S.row, borderBottom: "2px solid rgba(255,255,255,0.07)" }}><span style={{ color: "#ff8c00" }}>관세 ({f.tariffRate}%)</span><span style={{ color: "#ff8c00", fontWeight: 600 }}>+ {fmtKRW(tariff)}</span></div>
             <div style={S.row}><span style={{ color: "#ff8c00" }}>부가세 (10%)</span><span style={{ color: "#ff8c00" }}>+ {fmtKRW(vat)}</span></div>
-            <div style={{ ...S.row, borderBottom: "2px solid rgba(255,255,255,0.05)" }}><span style={{ fontWeight: 600 }}>세금 소계</span><span style={{ fontWeight: 600 }}>{fmtKRW(totalDuty)}</span></div>
+            <div style={{ ...S.row, borderBottom: "2px solid rgba(255,255,255,0.07)" }}><span style={{ fontWeight: 600 }}>세금 소계</span><span style={{ fontWeight: 600 }}>{fmtKRW(totalDuty)}</span></div>
 
             {[["해상운임", f.shipping], ["보험료", f.insurance], ["관세사 수수료", f.customs_fee], ["검역/검사비", f.inspection], ["내륙운송비", f.transport], ["보관료", f.storage], ["기타비용", f.other]].map(([l, v], i) =>
               Number(v) > 0 ? <div key={i} style={S.row}><span style={{ color: "rgba(255,255,255,0.3)" }}>{l}</span><span style={{ color: "rgba(255,255,255,0.5)" }}>+ {fmtKRW(Number(v))}</span></div> : null
             )}
-            <div style={S.row}><span style={{ color: "rgba(255,255,255,0.4)" }}>부대비용 소계</span><span>{fmtKRW(extras)}</span></div>
+            <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>부대비용 소계</span><span>{fmtKRW(extras)}</span></div>
           </div>
 
           {/* Total */}
-          <div style={{ background: "linear-gradient(135deg,rgba(0,100,255,0.08),rgba(0,210,120,0.06))", borderRadius: 10, padding: 16, textAlign: "center", marginBottom: 12 }}>
+          <div style={{ background: "rgba(232,97,45,0.08)", borderRadius: 10, padding: 16, textAlign: "center", marginBottom: 12 }}>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginBottom: 4 }}>총 수입원가</div>
-            <div style={{ fontSize: 26, fontWeight: 800, color: "#4da6ff" }}>{fmtKRW(totalCost)}</div>
+            <div style={{ fontSize: 26, fontWeight: 800, color: "#E8612D" }}>{fmtKRW(totalCost)}</div>
           </div>
 
           <div style={{ background: "rgba(0,210,120,0.05)", borderRadius: 10, padding: 14, marginBottom: 12 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#00d278", marginBottom: 8 }}>{f.unit}당 원가 분석</div>
-            <div style={S.row}><span style={{ color: "rgba(255,255,255,0.4)" }}>{f.unit}당 수입원가</span><span style={{ fontSize: 16, fontWeight: 800, color: "#00d278" }}>{fmtKRW(unitCost)}</span></div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#E8612D", marginBottom: 8 }}>{f.unit}당 원가 분석</div>
+            <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>{f.unit}당 수입원가</span><span style={{ fontSize: 16, fontWeight: 800, color: "#E8612D" }}>{fmtKRW(unitCost)}</span></div>
             <div style={{ marginTop: 8, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
               마진별 판매가: 10% → {fmtKRW(marginPrice10)} · 20% → {fmtKRW(marginPrice20)} · 30% → {fmtKRW(marginPrice30)}
             </div>
@@ -124,10 +124,10 @@ export default function ToolsPage() {
           {/* Cost breakdown chart */}
           <div style={{ background: "rgba(255,255,255,0.015)", borderRadius: 10, padding: 14 }}>
             <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8 }}>비용 구성 비율</div>
-            {[["물품가격", cifKRW, "#4da6ff"], ["관세+부가세", totalDuty, "#ff8c00"], ["부대비용", extras, "#bb86fc"]].map(([l, v, c]) =>
+            {[["물품가격", cifKRW, "#E8612D"], ["관세+부가세", totalDuty, "#ff8c00"], ["부대비용", extras, "#bb86fc"]].map(([l, v, c]) =>
               <div key={l} style={{ marginBottom: 6 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, marginBottom: 2 }}>
-                  <span style={{ color: "rgba(255,255,255,0.4)" }}>{l}</span>
+                  <span style={{ color: "rgba(232,228,223,0.45)" }}>{l}</span>
                   <span style={{ color: c }}>{fmtKRW(v)} ({totalCost > 0 ? ((v / totalCost) * 100).toFixed(1) : 0}%)</span>
                 </div>
                 <div style={{ height: 6, background: "rgba(255,255,255,0.04)", borderRadius: 3, overflow: "hidden" }}>
@@ -189,7 +189,7 @@ ${q.items.map((it, i) => {
 </div>
 <div class="footer">
 본 견적서의 환율은 한국수출입은행 매매기준율 (${rates[q.cur]}) 기준이며, 실제 결제 시 환율 변동에 따라 금액이 달라질 수 있습니다.<br>
-Generated by ForexFlow · ${new Date().toLocaleString("ko-KR")}
+Generated by Bay Works · ${new Date().toLocaleString("ko-KR")}
 </div></body></html>`
 
       const w = window.open("", "_blank")
@@ -232,7 +232,7 @@ Generated by ForexFlow · ${new Date().toLocaleString("ko-KR")}
               <td style={{ padding: 3, width: 70 }}><select style={{ ...S.sel, fontSize: 12 }} value={it.unit} onChange={e => updateItem(i, "unit", e.target.value)}><option>kg</option><option>box</option><option>ton</option><option>ea</option></select></td>
               <td style={{ padding: 3, width: 100 }}><input type="number" style={{ ...S.inp, fontSize: 12, textAlign: "right" }} value={it.price} onChange={e => updateItem(i, "price", e.target.value)} /></td>
               <td style={{ padding: "3px 8px", fontSize: 12, textAlign: "right", fontWeight: 600 }}>{fmtF(amt, q.cur)}</td>
-              <td style={{ padding: "3px 8px", fontSize: 12, textAlign: "right", color: "#4da6ff" }}>{fmtKRW(krw)}</td>
+              <td style={{ padding: "3px 8px", fontSize: 12, textAlign: "right", color: "#E8612D" }}>{fmtKRW(krw)}</td>
               <td style={{ padding: 3 }}>{q.items.length > 1 && <button onClick={() => removeItem(i)} style={{ background: "rgba(255,50,50,0.1)", border: "none", color: "#ff5050", borderRadius: 4, cursor: "pointer", padding: "2px 6px", fontSize: 11 }}>✕</button>}</td>
             </tr>
           })}</tbody>
@@ -248,7 +248,7 @@ Generated by ForexFlow · ${new Date().toLocaleString("ko-KR")}
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div style={{ textAlign: "right" }}>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>합계</div>
-            <div style={{ fontSize: 18, fontWeight: 800 }}>{fmtF(totalForeign, q.cur)} = <span style={{ color: "#4da6ff" }}>{fmtKRW(totalKRW)}</span></div>
+            <div style={{ fontSize: 18, fontWeight: 800 }}>{fmtF(totalForeign, q.cur)} = <span style={{ color: "#E8612D" }}>{fmtKRW(totalKRW)}</span></div>
           </div>
           <button style={{ ...S.btn, padding: "12px 24px" }} onClick={printQuote}>🖨️ 견적서 인쇄/PDF</button>
         </div>
@@ -257,13 +257,13 @@ Generated by ForexFlow · ${new Date().toLocaleString("ko-KR")}
   }
 
   return <div style={S.app}>
-    <Head><title>수입원가 계산기 · 견적서 - ForexFlow</title></Head>
+    <Head><title>수입원가 계산기 · 견적서 - Bay Works</title></Head>
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
     <header style={S.hdr}>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 6, background: "linear-gradient(135deg,#0088ff,#00c6ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#fff" }}>FX</div>
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>ForexFlow</span>
+          <img src="/logo.png" alt="Bay Works" style={{ height: 36, width: "auto" }}
+          />
         </Link>
         <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>/ 수입도구</span>
       </div>
