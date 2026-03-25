@@ -1,11 +1,11 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
 diff --git a/pages/_app.js b/pages/_app.js
-index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449212e2f48 100644
+index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..53b42d8f5dc82f6b905d7dacb2682cbdc8d04a0f 100644
 --- a/pages/_app.js
 +++ b/pages/_app.js
-@@ -1,101 +1,94 @@
+@@ -1,101 +1,95 @@
++// NOTE: This file must remain valid JS/TS source (no shell patch text).
  import Head from 'next/head'
-+import Link from 'next/link'
+ import Link from 'next/link'
  import { useRouter } from 'next/router'
  
  const B = {
@@ -21,9 +21,9 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
    const path = router.pathname
    const mainTabs = [
      { href: "/", label: "대시보드", match: "/" },
-     { href: "/products", label: "품목·관세", match: "/products" },
-     { href: "/ocean", label: "해양정보", match: "/ocean" },
-     { href: "/calculator", label: "계산기", match: "/calculator" },
+    { href: "/products", label: "품목·관세", match: "/products" },
+    { href: "/ocean", label: "해양정보", match: "/ocean" },
+    { href: "/calculator", label: "계산기", match: "/calculator" },
      { href: "/docs", label: "수입서류", match: "/docs" },
      { href: "/tools", label: "수입도구", match: "/tools" },
    ]
@@ -68,7 +68,7 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
          paddingBottom: 8,
        }}>
          {mainTabs.map(tab => (
-          <Link key={tab.href} href={tab.href} style={nb(isActive(tab))}>{tab.label}</Link>
+           <Link key={tab.href} href={tab.href} style={nb(isActive(tab))}>{tab.label}</Link>
          ))}
        </nav>
      </header>
@@ -98,6 +98,3 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
      </>
    )
  }
- 
-EOF
-)
