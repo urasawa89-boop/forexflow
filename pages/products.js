@@ -1,5 +1,5 @@
-import Home from "./index"
+import HomePage from "../components/HomePage"
 
 export default function ProductsPage() {
-  return <Home initialTab="products" />
+  return <HomePage initialTab="products" />
 }
