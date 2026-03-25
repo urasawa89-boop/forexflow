@@ -124,25 +124,22 @@ export default function DocsPage() {
   }
 
   const S = {
-    app: { fontFamily: "'Pretendard',sans-serif", background: "#08080f", color: "#e4e4ec", minHeight: "100vh", fontSize: 14 },
-    hdr: { background: "#0c0c16", borderBottom: "1px solid rgba(255,255,255,0.05)", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52, flexWrap: "wrap", gap: 8 },
+    app: { fontFamily: "'Pretendard',sans-serif", background: "#2B3539", color: "#E8E4DF", minHeight: "100vh", fontSize: 14 },
+    hdr: { background: "#242D31", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 },
     mn: { maxWidth: 1160, margin: "0 auto", padding: "16px 20px" },
-    c: { background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 11, padding: 15 },
-    bo: (a) => ({ padding: "7px 14px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.08)", background: a ? "rgba(0,100,255,0.12)" : "transparent", color: a ? "#4da6ff" : "rgba(255,255,255,0.5)", fontSize: 12, cursor: "pointer", fontWeight: a ? 600 : 400 }),
+    c: { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 11, padding: 15 },
+    bo: (a) => ({ padding: "7px 14px", borderRadius: 7, border: `1px solid ${a ? "rgba(232,97,45,0.3)" : "rgba(255,255,255,0.07)"}`, background: a ? "rgba(232,97,45,0.12)" : "transparent", color: a ? "#E8612D" : "rgba(232,228,223,0.45)", fontSize: 12, cursor: "pointer", fontWeight: a ? 600 : 400 }),
   }
 
   return <div style={S.app}>
-    <Head><title>수입서류 체크리스트 - ForexFlow</title></Head>
+    <Head><title>수입서류 체크리스트 - Bay Works</title></Head>
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
     <header style={S.hdr}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 6, background: "linear-gradient(135deg,#0088ff,#00c6ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#fff" }}>FX</div>
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>ForexFlow</span>
-        </Link>
-        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>/ 수입서류 체크리스트</span>
-      </div>
-      <Link href="/" style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>← 대시보드로 돌아가기</Link>
+      <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+        <img src="/logo.png" alt="Bay Works" style={{ height: 36, width: "auto" }} />
+      </Link>
+      <span style={{ fontSize: 12, color: "rgba(232,228,223,0.35)" }}>수입서류 체크리스트</span>
+      <Link href="/" style={{ color: "#E8612D", fontSize: 12, textDecoration: "none" }}>← 대시보드</Link>
     </header>
 
     <main style={S.mn}>
@@ -162,14 +159,14 @@ export default function DocsPage() {
             <div style={{ fontSize: 15, fontWeight: 700 }}>{cat.label}</div>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>HS코드 {cat.hs} 해당</div>
           </div>
-          <div style={{ fontSize: 12, color: "#4da6ff" }}>
+          <div style={{ fontSize: 12, color: "#E8612D" }}>
             {cat.docs.filter((_, i) => checked[`${selected}_${i}`]).length} / {cat.docs.length} 완료
           </div>
         </div>
 
         {/* Progress bar */}
-        <div style={{ height: 4, background: "rgba(255,255,255,0.05)", borderRadius: 2, marginBottom: 14, overflow: "hidden" }}>
-          <div style={{ height: "100%", width: `${(cat.docs.filter((_, i) => checked[`${selected}_${i}`]).length / cat.docs.length) * 100}%`, background: "linear-gradient(90deg,#0066ff,#00c6ff)", borderRadius: 2, transition: "width 0.3s" }} />
+        <div style={{ height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, marginBottom: 14, overflow: "hidden" }}>
+          <div style={{ height: "100%", width: `${(cat.docs.filter((_, i) => checked[`${selected}_${i}`]).length / cat.docs.length) * 100}%`, background: "linear-gradient(90deg,#E8612D,#F07A4A)", borderRadius: 2, transition: "width 0.3s" }} />
         </div>
 
         {/* Document list */}
@@ -177,7 +174,7 @@ export default function DocsPage() {
           const key = `${selected}_${i}`
           const done = checked[key]
           return <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
-            <div onClick={() => toggle(i)} style={{ width: 20, height: 20, borderRadius: 5, border: done ? "none" : "2px solid rgba(255,255,255,0.15)", background: done ? "#00d278" : "transparent", cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 2 }}>
+            <div onClick={() => toggle(i)} style={{ width: 20, height: 20, borderRadius: 5, border: done ? "none" : "2px solid rgba(255,255,255,0.15)", background: done ? "#4CAF50" : "transparent", cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 2 }}>
               {done && <span style={{ color: "#fff", fontSize: 12, fontWeight: 700 }}>✓</span>}
             </div>
             <div style={{ flex: 1, opacity: done ? 0.5 : 1, textDecoration: done ? "line-through" : "none" }}>
@@ -187,7 +184,7 @@ export default function DocsPage() {
               </div>
               <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)" }}>{doc.desc}</div>
             </div>
-            <a href={doc.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 10.5, color: "#4da6ff", textDecoration: "none", whiteSpace: "nowrap", padding: "4px 10px", border: "1px solid rgba(0,100,255,0.2)", borderRadius: 6, flexShrink: 0 }}>
+            <a href={doc.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 10.5, color: "#E8612D", textDecoration: "none", whiteSpace: "nowrap", padding: "4px 10px", border: "1px solid rgba(0,100,255,0.2)", borderRadius: 6, flexShrink: 0 }}>
               {doc.site} →
             </a>
           </div>
@@ -205,7 +202,7 @@ export default function DocsPage() {
         <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>🔗 수출입 관련 주요 사이트</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
           {USEFUL_SITES.map((s, i) => <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "rgba(255,255,255,0.015)", borderRadius: 8, padding: "10px 12px", border: "1px solid rgba(255,255,255,0.03)", textDecoration: "none" }}>
-            <div style={{ fontSize: 12.5, fontWeight: 600, color: "#4da6ff", marginBottom: 3 }}>{s.name}</div>
+            <div style={{ fontSize: 12.5, fontWeight: 600, color: "#E8612D", marginBottom: 3 }}>{s.name}</div>
             <div style={{ fontSize: 10.5, color: "rgba(255,255,255,0.35)" }}>{s.desc}</div>
           </a>)}
         </div>
