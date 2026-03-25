@@ -91,8 +91,17 @@ function Spark({ data, color, w = 76, h = 26 }) {
 }
 
 function Ad({ pos }) {
-  return <div style={{ background: "linear-gradient(135deg,#1a1a2e,#16213e)", border: "1px dashed rgba(255,255,255,0.1)", borderRadius: 10, padding: "12px 20px", textAlign: "center", color: "rgba(255,255,255,0.25)", fontSize: 11, letterSpacing: 1, marginBottom: pos === "top" ? 16 : 0, marginTop: pos === "bottom" ? 16 : 0 }}>
-    AD · Google AdSense / 카카오 애드핏
+  useEffect(() => {
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}) } catch (e) {}
+  }, [])
+
+  return <div style={{ marginBottom: pos === "top" ? 16 : 0, marginTop: pos === "bottom" ? 16 : 0 }}>
+    <ins className="adsbygoogle"
+      style={{ display: "block" }}
+      data-ad-client="ca-pub-3106394601395095"
+      data-ad-slot="여기에_광고단위_슬롯ID"
+      data-ad-format="auto"
+      data-full-width-responsive="true" />
   </div>
 }
 
