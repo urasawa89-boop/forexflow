@@ -1,5 +1,5 @@
-import Home from "./index"
+import HomePage from "../components/HomePage"
 
 export default function CalculatorPage() {
-  return <Home initialTab="calculator" />
+  return <HomePage initialTab="calculator" />
 }
