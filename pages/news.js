@@ -61,17 +61,6 @@ export default function NewsPage() {
 
   return <div style={S.app}>
     <Head><title>수산물 뉴스 - Bay Works</title></Head>
-    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
-    <header style={S.hdr}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
-          <img src="/logo.png" alt="Bay Works" style={{ height: 36, width: "auto" }}
-          />
-        </Link>
-        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>/ 수산물 뉴스</span>
-      </div>
-      <Link href="/" style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>← 대시보드</Link>
-    </header>
 
     <main style={S.mn}>
       <h1 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>📰 수산물 수출입 뉴스</h1>
