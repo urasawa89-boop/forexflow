@@ -19,26 +19,17 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
  function NavBar() {
    const router = useRouter()
    const path = router.pathname
--  const query = router.query
--
--  // Determine active sub-tab for index page
--  const indexTab = query.tab || "dashboard"
--
    const mainTabs = [
      { href: "/", label: "대시보드", match: "/" },
--    { href: "/?tab=products", label: "품목·관세", match: "products" },
--    { href: "/?tab=ocean", label: "해양정보", match: "ocean" },
--    { href: "/?tab=calculator", label: "계산기", match: "calculator" },
-+    { href: "/products", label: "품목·관세", match: "/products" },
-+    { href: "/ocean", label: "해양정보", match: "/ocean" },
-+    { href: "/calculator", label: "계산기", match: "/calculator" },
-     { href: "/docs", label: "수입서류", match: "/docs" },
-     { href: "/tools", label: "수입도구", match: "/tools" },
+
+    { href: "/products", label: "품목·관세", match: "/products" },
+    { href: "/ocean", label: "해양정보", match: "/ocean" },
+    { href: "/calculator", label: "계산기", match: "/calculator" },
+    { href: "/docs", label: "수입서류", match: "/docs" },
+    { href: "/tools", label: "수입도구", match: "/tools" },
    ]
  
    const isActive = (tab) => {
--    if (path === "/" && tab.match === "/" && indexTab === "dashboard") return true
--    if (path === "/" && tab.match === indexTab) return true
      if (tab.match === path) return true
      return false
    }
@@ -66,8 +57,7 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
        alignItems: "center",
        gap: 8,
      }}>
--      <a href="/"><img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} /></a>
-+      <Link href="/"><img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} /></Link>
+      <Link href="/"><img src="/logo.png" alt="Bay Works" style={{ height: 40, width: "auto" }} /></Link>
        <nav style={{
          display: "flex",
          gap: 2,
@@ -79,8 +69,7 @@ index 87852f4b199fe3b14c14bd84330270b6ed8f6d55..4553fdb4e7d62996d73fee1174b49449
          paddingBottom: 8,
        }}>
          {mainTabs.map(tab => (
--          <a key={tab.href} href={tab.href} style={nb(isActive(tab))}>{tab.label}</a>
-+          <Link key={tab.href} href={tab.href} style={nb(isActive(tab))}>{tab.label}</Link>
+          <Link key={tab.href} href={tab.href} style={nb(isActive(tab))}>{tab.label}</Link>
          ))}
        </nav>
      </header>
