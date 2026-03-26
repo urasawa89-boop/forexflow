@@ -258,8 +258,8 @@ export default function HomePage({ initialTab = "dashboard" }) {
   function ImportCalc() {
     const [p, sP] = useState("shrimp")
     const [cur, sCur] = useState("JPY")
-    const [amt, sAmt] = useState("5000000")
-    const [qty, sQty] = useState("3000")
+    const [amt, sAmt] = useState("")
+    const [qty, sQty] = useState("")
     const prod = getProd(p)
     const krw = amt ? toKRW(Number(amt), cur, rates[cur] || 0) : 0
     const tariffAmt = krw * (prod.tariff / 100)
