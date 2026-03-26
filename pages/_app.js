@@ -19,9 +19,9 @@ function NavBar() {
     { href: "/ocean", label: "해양정보", match: "/ocean" },
     { href: "/calculator", label: "계산기", match: "/calculator" },
     { href: "/docs", label: "수입서류", match: "/docs" },
-    { href: "/tools", label: "수입도구", match: "/tools" },
-    { href: "/guide", label: "가이드", match: "/guide" },
-    { href: "/about", label: "소개", match: "/about" },
+    { href: "/tools", label: "수입원가 계산기", match: "/tools" },
+    { href: "/guide", label: "수출입 가이드", match: "/guide" },
+    { href: "/about", label: "회사소개", match: "/about" },
   ]
   const isActive = (tab) => {
     if (tab.match === "/" && path === "/") return true
