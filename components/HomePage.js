@@ -4,102 +4,87 @@ import { useRouter } from "next/router"
 // Shared main screen used by /, /products, /ocean, /calculator.
 
 const CURRENCIES = [
-  { code: "USD", name: "미국 달러", symbol: "$", flag: "" },
-  { code: "JPY", name: "일본 엔(100)", symbol: "¥", flag: "" },
-  { code: "CNY", name: "중국 위안", symbol: "¥", flag: "" },
-  { code: "EUR", name: "유로", symbol: "€", flag: "" },
+  { code: "USD", name: "미국 달러", symbol: "$", flag: "🇺🇸" },
+  { code: "JPY", name: "일본 엔(100)", symbol: "¥", flag: "🇯🇵" },
+  { code: "CNY", name: "중국 위안", symbol: "¥", flag: "🇨🇳" },
+  { code: "EUR", name: "유로", symbol: "€", flag: "🇪🇺" },
 ]
 const FALLBACK = { USD: 1385.5, JPY: 921.0, CNY: 190.3, EUR: 1510.2 }
 
 // ── 수산물 품목 DB (관세청 공식 데이터 2026.02.11 기준) ──
 // 출처: 관세청 품목번호별 관세율표 | ※ 실제 적용세율은 UNIPASS에서 최종 확인
 const SEAFOOD_DB = [
-  // ── 냉동 어류 (0303) — 수입 핵심 품목 ──
-  { id: "frozen_salmon", name: "냉동 연어", hs: "0303.14", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_tuna", name: "냉동 참치", hs: "0303.31", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_herring", name: "냉동 청어", hs: "0303.41", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_anchovy", name: "냉동 멸치", hs: "0303.42", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_sardine", name: "냉동 정어리", hs: "0303.43", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_mackerel", name: "냉동 고등어", hs: "0303.44", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_horsemackerel", name: "냉동 전갱이(메가리)", hs: "0303.49", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_cod", name: "냉동 대구", hs: "0303.63", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_pollock", name: "냉동 명태", hs: "0303.67", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_monkfish", name: "냉동 아귀", hs: "0303.89", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  { id: "frozen_kanari", name: "냉동 까나리", hs: "0303.89", tariff: 10, unit: "kg", emoji: "", group: "냉동어류" },
-  // ── 냉동 갑각류 (0306) ──
-  { id: "frozen_lobster", name: "냉동 랍스터", hs: "0306.11", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "frozen_snow_crab", name: "냉동 대게", hs: "0306.12", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "frozen_blue_crab", name: "냉동 꽃게", hs: "0306.14", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "frozen_shrimp", name: "냉동 새우(흰다리)", hs: "0306.17", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "frozen_gonjeng", name: "냉동 곤쟁이(젓새우)", hs: "0306.19", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  // ── 냉동 연체류 ──
-  { id: "squid_frozen", name: "냉동 오징어", hs: "0307.43", tariff: 10, unit: "kg", emoji: "", group: "연체류" },
-  // ── 냉동 필레 ──
-  { id: "fillet_salmon_frozen", name: "연어 필레(냉동)", hs: "0304.81", tariff: 10, unit: "kg", emoji: "", group: "필레" },
-  // ── 활어 (0301) ──
-  { id: "live_trout", name: "활 송어", hs: "0301.11", tariff: 10, unit: "kg", emoji: "", group: "활어" },
-  { id: "live_eel", name: "활 장어(뱀장어)", hs: "0301.19", tariff: 10, unit: "kg", emoji: "", group: "활어" },
-  { id: "live_carp", name: "활 잉어", hs: "0301.93", tariff: 10, unit: "kg", emoji: "", group: "활어" },
-  { id: "live_flatfish", name: "활 넙치(광어)", hs: "0301.99", tariff: 10, unit: "kg", emoji: "", group: "활어" },
-  { id: "live_seabream", name: "활 참돔", hs: "0301.99", tariff: 10, unit: "kg", emoji: "", group: "활어" },
-  { id: "live_silchi", name: "활 실치(뱅어)", hs: "0301.99", tariff: 10, unit: "kg", emoji: "", group: "활어" },
-  // ── 신선냉장 어류 (0302) ──
-  { id: "fresh_salmon", name: "신선 연어", hs: "0302.14", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_tuna", name: "신선 참치", hs: "0302.31", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_flatfish", name: "신선 넙치(광어)", hs: "0302.29", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_herring", name: "신선 청어", hs: "0302.41", tariff: 10, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_anchovy", name: "신선 멸치", hs: "0302.42", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_sardine", name: "신선 정어리", hs: "0302.43", tariff: 10, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_mackerel", name: "신선 고등어", hs: "0302.44", tariff: 10, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_horsemackerel", name: "신선 전갱이(메가리)", hs: "0302.49", tariff: 10, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_cod", name: "신선 대구", hs: "0302.51", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_pollock", name: "신선 명태", hs: "0302.52", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_eel", name: "신선 장어(뱀장어)", hs: "0302.74", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_monkfish", name: "신선 아귀", hs: "0302.89", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_toothfish", name: "신선 메로(이빨고기)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_silchi", name: "신선 실치(뱅어치어)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  { id: "fresh_kanari", name: "신선 까나리(양미리)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "", group: "어류" },
-  // ── 신선 필레 ──
-  { id: "fillet_salmon", name: "연어 필레(신선)", hs: "0304.41", tariff: 20, unit: "kg", emoji: "", group: "필레" },
-  // ── 활 갑각류 ──
-  { id: "live_lobster", name: "활 랍스터", hs: "0306.31", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "live_blue_crab", name: "활 꽃게", hs: "0306.33", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "live_snow_crab", name: "활 대게", hs: "0306.34", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "live_shrimp", name: "활 새우", hs: "0306.36", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  { id: "live_gonjeng", name: "활 곤쟁이", hs: "0306.39", tariff: 20, unit: "kg", emoji: "", group: "갑각류" },
-  // ── 연체류/패류 ──
-  { id: "oyster_fresh", name: "활/신선 굴", hs: "0307.11", tariff: 20, unit: "kg", emoji: "", group: "패류" },
-  { id: "scallop_fresh", name: "활/신선 가리비(관자)", hs: "0307.21", tariff: 20, unit: "kg", emoji: "", group: "패류" },
-  { id: "squid_fresh", name: "활/신선 오징어", hs: "0307.42", tariff: 10, unit: "kg", emoji: "", group: "연체류" },
-  { id: "octopus_fresh", name: "활/신선 문어", hs: "0307.52", tariff: 20, unit: "kg", emoji: "", group: "연체류" },
-  { id: "clam_fresh", name: "활/신선 조개(바지락)", hs: "0307.71", tariff: 20, unit: "kg", emoji: "", group: "패류" },
-  { id: "abalone_fresh", name: "활/신선 전복", hs: "0307.81", tariff: 20, unit: "kg", emoji: "", group: "패류" },
-  // ── 기타 수생동물 ──
-  { id: "sea_cucumber", name: "활/신선 해삼", hs: "0308.11", tariff: 20, unit: "kg", emoji: "", group: "기타" },
-  { id: "sea_urchin", name: "활/신선 성게", hs: "0308.21", tariff: 20, unit: "kg", emoji: "", group: "기타" },
-  // ── 가공품 ──
-  { id: "fish_roe", name: "어란(명란 등)", hs: "0305.20", tariff: 20, unit: "kg", emoji: "", group: "가공품" },
-  { id: "smoked_salmon", name: "훈제 연어", hs: "0305.41", tariff: 20, unit: "kg", emoji: "", group: "가공품" },
-  { id: "dried_pollock", name: "건조 명태(황태/북어)", hs: "0305.59", tariff: 20, unit: "kg", emoji: "", group: "가공품" },
-  // ── 해조류 ──
-  { id: "gonori", name: "고노리", hs: "1212.21", tariff: 20, unit: "kg", emoji: "", group: "해조류" },
-  { id: "miyeok", name: "미역", hs: "1212.21", tariff: 20, unit: "kg", emoji: "", group: "해조류" },
-  { id: "dashima", name: "다시마", hs: "1212.21", tariff: 20, unit: "kg", emoji: "", group: "해조류" },
-  { id: "kim", name: "김(마른김/조미김)", hs: "2008.99", tariff: 20, unit: "kg", emoji: "", group: "해조류" },
-  // ── 조제품 ──
-  { id: "canned_tuna", name: "참치캔", hs: "1604.14", tariff: 20, unit: "box", emoji: "", group: "조제품" },
-  { id: "fish_cake", name: "어묵류", hs: "1604.20", tariff: 20, unit: "kg", emoji: "", group: "조제품" },
-  { id: "prep_crab", name: "조제 게살", hs: "1605.10", tariff: 20, unit: "kg", emoji: "", group: "조제품" },
-  { id: "prep_shrimp", name: "조제 새우", hs: "1605.21", tariff: 20, unit: "kg", emoji: "", group: "조제품" },
-  { id: "prep_oyster", name: "조제 굴", hs: "1605.51", tariff: 20, unit: "kg", emoji: "", group: "조제품" },
-  { id: "prep_abalone", name: "조제 전복", hs: "1605.53", tariff: 20, unit: "kg", emoji: "", group: "조제품" },
-  { id: "prep_squid", name: "조제 오징어/문어", hs: "1605.54", tariff: 20, unit: "kg", emoji: "", group: "조제품" },
-  // ── 기타 ──
-  { id: "other", name: "기타 수산물", hs: "-", tariff: 0, unit: "kg", emoji: "", group: "기타" },
+  { id: "frozen_salmon", name: "냉동 연어", hs: "0303.14", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_tuna", name: "냉동 참치", hs: "0303.31", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_herring", name: "냉동 청어", hs: "0303.41", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_anchovy", name: "냉동 멸치", hs: "0303.42", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_sardine", name: "냉동 정어리", hs: "0303.43", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_mackerel", name: "냉동 고등어", hs: "0303.44", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_horsemackerel", name: "냉동 전갱이(메가리)", hs: "0303.49", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_cod", name: "냉동 대구", hs: "0303.63", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_pollock", name: "냉동 명태", hs: "0303.67", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_monkfish", name: "냉동 아귀", hs: "0303.89", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_kanari", name: "냉동 까나리", hs: "0303.89", tariff: 10, unit: "kg", emoji: "🧊", group: "냉동어류" },
+  { id: "frozen_lobster", name: "냉동 랍스터", hs: "0306.11", tariff: 20, unit: "kg", emoji: "🦞", group: "갑각류" },
+  { id: "frozen_snow_crab", name: "냉동 대게", hs: "0306.12", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "frozen_blue_crab", name: "냉동 꽃게", hs: "0306.14", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "frozen_shrimp", name: "냉동 새우(흰다리)", hs: "0306.17", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  { id: "frozen_gonjeng", name: "냉동 곤쟁이(젓새우)", hs: "0306.19", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  { id: "squid_frozen", name: "냉동 오징어", hs: "0307.43", tariff: 10, unit: "kg", emoji: "🦑", group: "연체류" },
+  { id: "fillet_salmon_frozen", name: "연어 필레(냉동)", hs: "0304.81", tariff: 10, unit: "kg", emoji: "🍣", group: "필레" },
+  { id: "live_trout", name: "활 송어", hs: "0301.11", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_eel", name: "활 장어(뱀장어)", hs: "0301.19", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_carp", name: "활 잉어", hs: "0301.93", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_flatfish", name: "활 넙치(광어)", hs: "0301.99", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_seabream", name: "활 참돔", hs: "0301.99", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "live_silchi", name: "활 실치(뱅어)", hs: "0301.99", tariff: 10, unit: "kg", emoji: "🐟", group: "활어" },
+  { id: "fresh_salmon", name: "신선 연어", hs: "0302.14", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_tuna", name: "신선 참치", hs: "0302.31", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_flatfish", name: "신선 넙치(광어)", hs: "0302.29", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_herring", name: "신선 청어", hs: "0302.41", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_anchovy", name: "신선 멸치", hs: "0302.42", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_sardine", name: "신선 정어리", hs: "0302.43", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_mackerel", name: "신선 고등어", hs: "0302.44", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_horsemackerel", name: "신선 전갱이(메가리)", hs: "0302.49", tariff: 10, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_cod", name: "신선 대구", hs: "0302.51", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_pollock", name: "신선 명태", hs: "0302.52", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_eel", name: "신선 장어(뱀장어)", hs: "0302.74", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_monkfish", name: "신선 아귀", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_toothfish", name: "신선 메로(이빨고기)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_silchi", name: "신선 실치(뱅어치어)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fresh_kanari", name: "신선 까나리(양미리)", hs: "0302.89", tariff: 20, unit: "kg", emoji: "🐟", group: "어류" },
+  { id: "fillet_salmon", name: "연어 필레(신선)", hs: "0304.41", tariff: 20, unit: "kg", emoji: "🍣", group: "필레" },
+  { id: "live_lobster", name: "활 랍스터", hs: "0306.31", tariff: 20, unit: "kg", emoji: "🦞", group: "갑각류" },
+  { id: "live_blue_crab", name: "활 꽃게", hs: "0306.33", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "live_snow_crab", name: "활 대게", hs: "0306.34", tariff: 20, unit: "kg", emoji: "🦀", group: "갑각류" },
+  { id: "live_shrimp", name: "활 새우", hs: "0306.36", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  { id: "live_gonjeng", name: "활 곤쟁이", hs: "0306.39", tariff: 20, unit: "kg", emoji: "🦐", group: "갑각류" },
+  { id: "oyster_fresh", name: "활/신선 굴", hs: "0307.11", tariff: 20, unit: "kg", emoji: "🦪", group: "패류" },
+  { id: "scallop_fresh", name: "활/신선 가리비(관자)", hs: "0307.21", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
+  { id: "squid_fresh", name: "활/신선 오징어", hs: "0307.42", tariff: 10, unit: "kg", emoji: "🦑", group: "연체류" },
+  { id: "octopus_fresh", name: "활/신선 문어", hs: "0307.52", tariff: 20, unit: "kg", emoji: "🐙", group: "연체류" },
+  { id: "clam_fresh", name: "활/신선 조개(바지락)", hs: "0307.71", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
+  { id: "abalone_fresh", name: "활/신선 전복", hs: "0307.81", tariff: 20, unit: "kg", emoji: "🐚", group: "패류" },
+  { id: "sea_cucumber", name: "활/신선 해삼", hs: "0308.11", tariff: 20, unit: "kg", emoji: "🟤", group: "기타" },
+  { id: "sea_urchin", name: "활/신선 성게", hs: "0308.21", tariff: 20, unit: "kg", emoji: "🟤", group: "기타" },
+  { id: "fish_roe", name: "어란(명란 등)", hs: "0305.20", tariff: 20, unit: "kg", emoji: "🟠", group: "가공품" },
+  { id: "smoked_salmon", name: "훈제 연어", hs: "0305.41", tariff: 20, unit: "kg", emoji: "🍣", group: "가공품" },
+  { id: "dried_pollock", name: "건조 명태(황태/북어)", hs: "0305.59", tariff: 20, unit: "kg", emoji: "🐡", group: "가공품" },
+  { id: "gonori", name: "고노리", hs: "1212.21", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
+  { id: "miyeok", name: "미역", hs: "1212.21", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
+  { id: "dashima", name: "다시마", hs: "1212.21", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
+  { id: "kim", name: "김(마른김/조미김)", hs: "2008.99", tariff: 20, unit: "kg", emoji: "🟢", group: "해조류" },
+  { id: "canned_tuna", name: "참치캔", hs: "1604.14", tariff: 20, unit: "box", emoji: "🥫", group: "조제품" },
+  { id: "fish_cake", name: "어묵류", hs: "1604.20", tariff: 20, unit: "kg", emoji: "🍥", group: "조제품" },
+  { id: "prep_crab", name: "조제 게살", hs: "1605.10", tariff: 20, unit: "kg", emoji: "🦀", group: "조제품" },
+  { id: "prep_shrimp", name: "조제 새우", hs: "1605.21", tariff: 20, unit: "kg", emoji: "🦐", group: "조제품" },
+  { id: "prep_oyster", name: "조제 굴", hs: "1605.51", tariff: 20, unit: "kg", emoji: "🦪", group: "조제품" },
+  { id: "prep_abalone", name: "조제 전복", hs: "1605.53", tariff: 20, unit: "kg", emoji: "🐚", group: "조제품" },
+  { id: "prep_squid", name: "조제 오징어/문어", hs: "1605.54", tariff: 20, unit: "kg", emoji: "🦑", group: "조제품" },
+  { id: "other", name: "기타 수산물", hs: "-", tariff: 0, unit: "kg", emoji: "📦", group: "기타" },
 ]
 const GROUPS = ["전체", "냉동어류", "갑각류", "연체류", "필레", "활어", "어류", "패류", "해조류", "가공품", "조제품", "기타"]
 
-// 주요 해양관측소 (국립해양조사원 관측소 코드)
 const OCEAN_STATIONS = [
   { code: "DT_0001", name: "인천", region: "서해" },
   { code: "DT_0004", name: "안흥", region: "서해" },
@@ -144,9 +129,6 @@ function Spark({ data, color, w = 76, h = 26 }) {
   return <svg width={w} height={h}><polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
 }
 
-
-
-
 // Brand Colors
 const B = {
   orange: "#E8612D", orangeLight: "#F07A4A", orangeDim: "rgba(232,97,45,0.12)",
@@ -178,10 +160,9 @@ export default function HomePage({ initialTab = "dashboard" }) {
   const [oceanUpd, setOceanUpd] = useState(null)
   const [oceanRegion, setOceanRegion] = useState("전체")
   const [oceanSource, setOceanSource] = useState("loading")
-  const [rateView, setRateView] = useState("card") // "card" or "table"
+  const [rateView, setRateView] = useState("card")
   const [newsData, setNewsData] = useState([])
 
-  // ── 환율 API ──
   const fetchRates = useCallback(async () => {
     try {
       const res = await fetch("/api/rates")
@@ -200,8 +181,6 @@ export default function HomePage({ initialTab = "dashboard" }) {
       setSrc("sim"); setUpd(new Date())
     }
   }, [rates])
-
-  // ── 해양정보 fetch ──
 
   const fetchOcean = useCallback(async () => {
     try {
@@ -225,7 +204,6 @@ export default function HomePage({ initialTab = "dashboard" }) {
   useEffect(() => { const iv = setInterval(fetchRates, 60000); return () => clearInterval(iv) }, [fetchRates])
   useEffect(() => { const iv = setInterval(fetchOcean, 300000); return () => clearInterval(iv) }, [fetchOcean])
 
-  // ── 뉴스 fetch ──
   const fetchNews = useCallback(async () => {
     try {
       const res = await fetch("/api/news")
@@ -244,19 +222,19 @@ export default function HomePage({ initialTab = "dashboard" }) {
     btn: { padding: "8px 16px", borderRadius: 8, border: "none", background: `linear-gradient(135deg,${B.orange},${B.orangeLight})`, color: "#fff", fontWeight: 600, fontSize: 12, cursor: "pointer" },
     bo: (a) => ({ padding: "6px 12px", borderRadius: 7, border: `1px solid ${a ? "rgba(232,97,45,0.3)" : B.bgCardBorder}`, background: a ? B.orangeDim : "transparent", color: a ? B.orange : B.textDim, fontSize: 11.5, cursor: "pointer", fontWeight: a ? 600 : 400 }),
     mod: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 },
-    mc: { background: "#1E2629", border: `1px solid ${B.bgCardBorder}`, borderRadius: 14, padding: 24, width: 400, maxHeight: "85vh", overflowY: "auto" },
+    mc: { background: "#1E2629", border: `1px solid ${B.bgCardBorder}`, borderRadius: 14, padding: 24, width: "90%", maxWidth: 400, maxHeight: "85vh", overflowY: "auto" },
     inp: { width: "100%", padding: "8px 12px", borderRadius: 7, border: `1px solid ${B.bgCardBorder}`, background: "rgba(255,255,255,0.03)", color: B.text, fontSize: 13, outline: "none", boxSizing: "border-box" },
     sel: { width: "100%", padding: "8px 12px", borderRadius: 7, border: `1px solid ${B.bgCardBorder}`, background: "#2B3539", color: B.text, fontSize: 13, outline: "none", boxSizing: "border-box" },
     lb: { display: "block", fontSize: 11, color: B.textDim, marginBottom: 4, fontWeight: 500 },
-    th: { textAlign: "left", padding: "8px 10px", fontSize: 10, color: B.textDimmer, textTransform: "uppercase", letterSpacing: 0.7 },
-    td: { padding: "9px 10px", background: "rgba(255,255,255,0.015)", fontSize: 12 },
+    th: { textAlign: "left", padding: "8px 10px", fontSize: 10, color: B.textDimmer, textTransform: "uppercase", letterSpacing: 0.7, whiteSpace: "nowrap" },
+    td: { padding: "9px 10px", background: "rgba(255,255,255,0.015)", fontSize: 12, whiteSpace: "nowrap" },
     secT: { fontSize: 14, fontWeight: 700, marginBottom: 12 },
     tag: { display: "inline-block", padding: "2px 7px", borderRadius: 4, fontSize: 10, background: B.orangeDim, color: B.orange, marginLeft: 4 },
   }
 
-  // ── Import Cost Calculator ──
+  // ── Import Cost Calculator (반응형) ──
   function ImportCalc() {
-    const [p, sP] = useState("shrimp")
+    const [p, sP] = useState("frozen_shrimp")
     const [cur, sCur] = useState("JPY")
     const [amt, sAmt] = useState("")
     const [qty, sQty] = useState("")
@@ -266,7 +244,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
     const vat = (krw + tariffAmt) * 0.1
     const total = krw + tariffAmt + vat
     const unitKRW = qty && Number(qty) > 0 ? total / Number(qty) : 0
-    return <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+    return <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14 }}>
       <div>
         <div style={{ marginBottom: 8 }}><label style={S.lb}>품목</label>
           <select style={S.sel} value={p} onChange={e => sP(e.target.value)}>
@@ -275,12 +253,12 @@ export default function HomePage({ initialTab = "dashboard" }) {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
           <div><label style={S.lb}>통화</label><select style={S.sel} value={cur} onChange={e => sCur(e.target.value)}>{CURRENCIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}</select></div>
-          <div><label style={S.lb}>수입금액 (외화)</label><input type="number" style={S.inp} value={amt} onChange={e => sAmt(e.target.value)} /></div>
+          <div><label style={S.lb}>수입금액 (외화)</label><input type="number" style={S.inp} value={amt} onChange={e => sAmt(e.target.value)} placeholder="금액 입력" /></div>
         </div>
-        <div><label style={S.lb}>수량 ({prod.unit})</label><input type="number" style={S.inp} value={qty} onChange={e => sQty(e.target.value)} /></div>
+        <div><label style={S.lb}>수량 ({prod.unit})</label><input type="number" style={S.inp} value={qty} onChange={e => sQty(e.target.value)} placeholder="수량 입력" /></div>
       </div>
       <div style={{ background: "rgba(255,255,255,0.015)", borderRadius: 9, padding: 14 }}>
-        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 10, color: "rgba(255,255,255,0.5)" }}>수입 비용 내역 </div>
+        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 10, color: "rgba(255,255,255,0.5)" }}>수입 비용 내역</div>
         {[["물품가격 (CIF)", fmtKRW(krw), null], [`관세 (${prod.tariff}%)`, "+ " + fmtKRW(tariffAmt), "#E8612D"], ["부가세 (10%)", "+ " + fmtKRW(vat), "#E8612D"]].map(([l, v, c], i) =>
           <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", fontSize: 12, borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
             <span style={{ color: "rgba(255,255,255,0.4)" }}>{l}</span><span style={{ color: c || "inherit" }}>{v}</span>
@@ -299,9 +277,8 @@ export default function HomePage({ initialTab = "dashboard" }) {
 
   // ── Dashboard ──
   const Dash = () => <div>
-    {/* Detailed Exchange Rates */}
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-      <div style={S.secT}>수출입 환율</div>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 6 }}>
+      <div style={S.secT}>💱 수출입 환율</div>
       <div style={{ display: "flex", gap: 4 }}>
         <button style={{ ...S.bo(rateView === "card"), ...(rateView === "card" ? { background: "rgba(232,97,45,0.12)", color: "#E8612D" } : {}) }} onClick={() => setRateView("card")}>카드</button>
         <button style={{ ...S.bo(rateView === "table"), ...(rateView === "table" ? { background: "rgba(232,97,45,0.12)", color: "#E8612D" } : {}) }} onClick={() => setRateView("table")}>표</button>
@@ -309,7 +286,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
     </div>
 
     {rateView === "card" ? (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 14 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10, marginBottom: 14 }}>
       {CURRENCIES.map(c => {
         const h2 = hist[c.code] || []; const prev = h2.length >= 2 ? h2[h2.length - 2] : rates[c.code]; const d = rates[c.code] - prev; const p = prev ? ((d / prev) * 100).toFixed(2) : "0"; const up = d >= 0
         const det = detailed[c.code]
@@ -325,7 +302,6 @@ export default function HomePage({ initialTab = "dashboard" }) {
             </div>
             <Spark data={h2.length > 1 ? h2 : [rates[c.code], rates[c.code]]} color={up ? "#4CAF50" : "#EF5350"} />
           </div>
-          {/* 상세 환율 */}
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 6 }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, marginBottom: 3 }}>
               <span style={{ color: "rgba(255,255,255,0.35)" }}>매매기준율</span>
@@ -347,14 +323,13 @@ export default function HomePage({ initialTab = "dashboard" }) {
       })}
     </div>
     ) : (
-    /* 표 형태 */
     <div style={{ ...S.c, marginBottom: 14, overflowX: "auto" }}>
-      <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 3px" }}>
+      <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 3px", minWidth: 600 }}>
         <thead><tr>
           <th style={S.th}>통화</th>
           <th style={S.th}>매매기준율</th>
-          <th style={{ ...S.th, color: "#E8612D" }}>전신환매도(TTS) 수입·송금보낼때</th>
-          <th style={{ ...S.th, color: "#4CAF50" }}>전신환매입(TTB) 수출·송금받을때</th>
+          <th style={{ ...S.th, color: "#E8612D" }}>TTS(수입)</th>
+          <th style={{ ...S.th, color: "#4CAF50" }}>TTB(수출)</th>
           <th style={S.th}>스프레드</th>
           <th style={S.th}>등락</th>
         </tr></thead>
@@ -364,7 +339,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
           const tts = det?.tts; const ttb = det?.ttb
           const spread = tts && ttb ? (tts - ttb).toFixed(2) : "-"
           return <tr key={c.code}>
-            <td style={{ ...S.td, borderRadius: "6px 0 0 6px", fontWeight: 600 }}>{c.flag} {c.code} <span style={{ fontWeight: 400, color: "rgba(255,255,255,0.3)", fontSize: 11 }}>{c.name}</span></td>
+            <td style={{ ...S.td, borderRadius: "6px 0 0 6px", fontWeight: 600 }}>{c.flag} {c.code}</td>
             <td style={{ ...S.td, fontWeight: 700, fontSize: 14 }}>{det?.base || rates[c.code]}</td>
             <td style={{ ...S.td, color: "#E8612D", fontWeight: 600 }}>{tts || "-"}</td>
             <td style={{ ...S.td, color: "#4CAF50", fontWeight: 600 }}>{ttb || "-"}</td>
@@ -373,27 +348,22 @@ export default function HomePage({ initialTab = "dashboard" }) {
           </tr>
         })}</tbody>
       </table>
-      <div style={{ marginTop: 8, padding: "8px 10px", background: "rgba(255,255,255,0.015)", borderRadius: 7, fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>
-        <strong>TTS(전신환매도율)</strong> = 수입대금 송금 시 은행이 외화를 파는 가격 (원화→외화) · <strong>TTB(전신환매입율)</strong> = 수출대금 입금 시 은행이 외화를 사는 가격 (외화→원화)
-      </div>
     </div>
     )}
 
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, fontSize: 10.5 }}>
-      <span style={{ color: "rgba(255,255,255,0.22)" }}>{src === "live" ? "은행 고시 환율 (송금 기준) · 네이버 실시간 시세와 5~15원 차이 가능" : "시뮬레이션 (API 연결 대기)"}{upd && ` · ${upd.toLocaleTimeString("ko-KR")}`}</span>
-      <div style={{ display: "flex", gap: 6 }}><button style={S.bo(false)} onClick={() => setAlertM(true)}>환율알림</button><button style={S.bo(false)} onClick={fetchRates}>↻ 새로고침</button></div>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, fontSize: 10.5, flexWrap: "wrap", gap: 6 }}>
+      <span style={{ color: "rgba(255,255,255,0.22)" }}>{src === "live" ? "은행 고시 환율 (송금 기준)" : "시뮬레이션 (API 연결 대기)"}{upd && ` · ${upd.toLocaleTimeString("ko-KR")}`}</span>
+      <div style={{ display: "flex", gap: 6 }}><button style={S.bo(false)} onClick={() => setAlertM(true)}>🔔 환율알림</button><button style={S.bo(false)} onClick={fetchRates}>↻ 새로고침</button></div>
     </div>
 
-    {/* Import Cost Simulator */}
     <div style={{ ...S.c, marginBottom: 16 }}>
-      <div style={S.secT}>수입 비용 시뮬레이터</div>
+      <div style={S.secT}>🧮 수입 비용 시뮬레이터</div>
       <ImportCalc />
     </div>
 
-    {/* Quick HS Code Lookup */}
     <div style={{ ...S.c, marginBottom: 16 }}>
-      <div style={S.secT}>주요 수산물 HS코드 · 관세율 (빠른조회) <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,0.25)" }}>관세청 공식 데이터 2026.02.11 기준</span></div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8 }}>
+      <div style={S.secT}>📋 주요 수산물 HS코드 · 관세율 <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,0.25)" }}>관세청 공식 2026.02.11</span></div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 8 }}>
         {SEAFOOD_DB.filter(p => p.hs !== "-").slice(0, 20).map(p =>
           <div key={p.id} style={{ background: "rgba(255,255,255,0.015)", borderRadius: 8, padding: "8px 10px", border: "1px solid rgba(255,255,255,0.03)" }}>
             <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 3 }}>{p.emoji} {p.name}</div>
@@ -406,13 +376,12 @@ export default function HomePage({ initialTab = "dashboard" }) {
       </div>
     </div>
 
-    {/* Ocean Info Preview */}
     {oceanData.length > 0 && <div style={S.c}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <div style={S.secT}>실시간 해양정보</div>
+        <div style={S.secT}>🌊 실시간 해양정보</div>
         <button style={S.bo(false)} onClick={() => setTab("ocean")}>전체보기 →</button>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 8 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: 8 }}>
         {oceanData.slice(0, 5).map(st =>
           <div key={st.code} style={{ background: "rgba(255,255,255,0.015)", borderRadius: 8, padding: "8px 10px", border: "1px solid rgba(255,255,255,0.03)", textAlign: "center" }}>
             <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 4 }}>{st.name}</div>
@@ -424,37 +393,34 @@ export default function HomePage({ initialTab = "dashboard" }) {
       </div>
     </div>}
 
-    {/* 수산물 뉴스 섹션 — /api/news 실시간 연동 */}
     <div style={{ ...S.c, marginTop: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <div style={S.secT}>수산물 수출입 뉴스</div>
+        <div style={S.secT}>📰 수산물 수출입 뉴스</div>
         <a href="/news" style={{ fontSize: 11, color: "#E8612D", textDecoration: "none" }}>전체보기 →</a>
       </div>
       {newsData.length > 0 ? newsData.map((n, i) => {
         const catColors = { "정책": "#E8612D", "검역": "#EF5350", "관세": "#ffd666", "통계": "#bb86fc", "수출": "#4CAF50", "어황": "#03dac6", "지원사업": "#81c784", "규제": "#e57373", "일반": "rgba(255,255,255,0.3)" }
         const color = catColors[n.category] || "rgba(255,255,255,0.3)"
-        return <div key={n.id || i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < newsData.length - 1 ? "1px solid rgba(255,255,255,0.03)" : "none" }}>
+        return <div key={n.id || i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < newsData.length - 1 ? "1px solid rgba(255,255,255,0.03)" : "none", gap: 8 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }}>
-            <span style={{ fontSize: 10, color, background: `${color}15`, padding: "1px 7px", borderRadius: 10, whiteSpace: "nowrap" }}>{n.category}</span>
+            <span style={{ fontSize: 10, color, background: `${color}15`, padding: "1px 7px", borderRadius: 10, whiteSpace: "nowrap", flexShrink: 0 }}>{n.category}</span>
             {n.link ? (
               <a href={n.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, fontWeight: 500, color: "#E8E4DF", textDecoration: "none", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.title}</a>
             ) : (
               <span style={{ fontSize: 12, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.title}</span>
             )}
           </div>
-          <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 12 }}>
+          <div style={{ textAlign: "right", flexShrink: 0 }}>
             <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{n.date}</div>
-            <div style={{ fontSize: 9.5, color: "rgba(255,255,255,0.15)" }}>{n.sourceName || n.source}</div>
           </div>
         </div>
       }) : (
         <div style={{ padding: "12px 0", fontSize: 12, color: "rgba(255,255,255,0.25)", textAlign: "center" }}>뉴스를 불러오는 중...</div>
       )}
     </div>
-
   </div>
 
-  // ── Products Tab (HS codes + Tariff) ──
+  // ── Products Tab ──
   const ProdTab = () => {
     const [grp, setGrp] = useState("전체")
     const [search, setSearch] = useState("")
@@ -464,16 +430,16 @@ export default function HomePage({ initialTab = "dashboard" }) {
       return true
     })
     return <div>
-      <div style={S.secT}>수산물 HS코드 · 관세율표 <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,0.25)" }}>관세청 공식 데이터 2026.02.11 기준 · 총 {SEAFOOD_DB.filter(p=>p.hs!=="-").length}개 품목</span></div>
+      <div style={S.secT}>수산물 HS코드 · 관세율표 <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,0.25)" }}>관세청 공식 2026.02.11 · 총 {SEAFOOD_DB.filter(p=>p.hs!=="-").length}개 품목</span></div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
         <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
           {GROUPS.map(g => <button key={g} style={{ ...S.bo(grp === g), fontSize: 10.5, padding: "4px 10px" }} onClick={() => setGrp(g)}>{g}</button>)}
         </div>
-        <input style={{ ...S.inp, width: 200 }} placeholder="🔍 품목명 또는 HS코드 검색" value={search} onChange={e => setSearch(e.target.value)} />
+        <input style={{ ...S.inp, width: "100%", maxWidth: 200 }} placeholder="🔍 품목명 또는 HS코드" value={search} onChange={e => setSearch(e.target.value)} />
       </div>
       <div style={{ ...S.c, overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 3px" }}>
-          <thead><tr><th style={S.th}>품목</th><th style={S.th}>HS코드</th><th style={S.th}>기본관세</th><th style={S.th}>단위</th><th style={S.th}>그룹</th><th style={S.th}>수입시 참고</th></tr></thead>
+        <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 3px", minWidth: 600 }}>
+          <thead><tr><th style={S.th}>품목</th><th style={S.th}>HS코드</th><th style={S.th}>관세</th><th style={S.th}>단위</th><th style={S.th}>그룹</th><th style={S.th}>참고</th></tr></thead>
           <tbody>{filtered.map(p =>
             <tr key={p.id}>
               <td style={{ ...S.td, borderRadius: "6px 0 0 6px", fontWeight: 600 }}>{p.emoji} {p.name}</td>
@@ -482,13 +448,12 @@ export default function HomePage({ initialTab = "dashboard" }) {
               <td style={{ ...S.td, color: "rgba(255,255,255,0.4)" }}>{p.unit}</td>
               <td style={S.td}><span style={S.tag}>{p.group}</span></td>
               <td style={{ ...S.td, borderRadius: "0 6px 6px 0", fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
-                {p.tariff > 0 && `예: 1억원 수입시 관세 ${(1e8 * p.tariff / 100 / 10000).toFixed(0)}만원`}
+                {p.tariff > 0 && `1억→관세${(1e8 * p.tariff / 100 / 10000).toFixed(0)}만`}
               </td>
             </tr>
           )}</tbody>
         </table>
       </div>
-      {/* Import Calculator below */}
       <div style={{ ...S.c, marginTop: 16 }}>
         <div style={S.secT}>수입 비용 시뮬레이터</div>
         <ImportCalc />
@@ -496,7 +461,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
     </div>
   }
 
-  // ── Ocean Tab (물때/파고/수온) ──
+  // ── Ocean Tab ──
   const OceanTab = () => {
     const regions = ["전체", "서해", "남해", "동해"]
     const filtered = oceanRegion === "전체" ? oceanData : oceanData.filter(s => s.region === oceanRegion)
@@ -506,24 +471,22 @@ export default function HomePage({ initialTab = "dashboard" }) {
     const getTideIcon = (s) => { if (s === "만조") return "●"; if (s === "간조") return "○"; if (s === "창조중") return "△"; return "▽" }
 
     return <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
         <div style={S.secT}>전국 실시간 해양정보</div>
-        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
           <span style={{ fontSize: 10.5, color: "rgba(255,255,255,0.25)" }}>
-            {oceanUpd ? (oceanSource === "live" ? `국립해양조사원 실시간 · ${oceanUpd.toLocaleTimeString("ko-KR")}` : `시뮬레이션 · ${oceanUpd.toLocaleTimeString("ko-KR")}`) : "로딩중..."} · 5분 자동갱신
+            {oceanUpd ? (oceanSource === "live" ? `실시간 · ${oceanUpd.toLocaleTimeString("ko-KR")}` : `시뮬레이션 · ${oceanUpd.toLocaleTimeString("ko-KR")}`) : "로딩중..."} · 5분갱신
           </span>
-          <button style={S.bo(false)} onClick={fetchOcean}>↻ 새로고침</button>
+          <button style={S.bo(false)} onClick={fetchOcean}>↻</button>
         </div>
       </div>
 
-      {/* Region filter */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 14 }}>
+      <div style={{ display: "flex", gap: 4, marginBottom: 14, flexWrap: "wrap" }}>
         {regions.map(r => <button key={r} style={{ ...S.bo(oceanRegion === r), ...(oceanRegion === r ? { background: "rgba(232,97,45,0.12)", color: "#E8612D" } : {}) }} onClick={() => setOceanRegion(r)}>{r}</button>)}
       </div>
 
-      {/* Wave height summary */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 16 }}>
-        {[["잔잔 (0~1m)", "#4CAF50"], ["보통 (1~1.5m)", "#F07A4A"], ["약간 높음 (1.5~2m)", "#E8612D"], ["높음 (2m+)", "#ff3333"]].map(([label, color]) => {
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 10, marginBottom: 16 }}>
+        {[["잔잔 (0~1m)", "#4CAF50"], ["보통 (1~1.5m)", "#F07A4A"], ["약간높음 (1.5~2m)", "#E8612D"], ["높음 (2m+)", "#ff3333"]].map(([label, color]) => {
           const count = filtered.filter(s => { const v = Number(s.waveHeight); if (color === "#4CAF50") return v < 1; if (color === "#F07A4A") return v >= 1 && v < 1.5; if (color === "#E8612D") return v >= 1.5 && v < 2; return v >= 2 }).length
           return <div key={label} style={S.c}>
             <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", marginBottom: 4 }}>{label}</div>
@@ -532,8 +495,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
         })}
       </div>
 
-      {/* Station cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}>
         {filtered.map(st => <div key={st.code} style={S.c}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
             <div>
@@ -564,8 +526,6 @@ export default function HomePage({ initialTab = "dashboard" }) {
           </div>
         </div>)}
       </div>
-
-    
     </div>
   }
 
@@ -588,7 +548,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
   const AlertMod = () => {
     const [f, sF] = useState({ currency: "JPY", cond: "below", target: "" })
     return <div style={S.mod} onClick={() => setAlertM(false)}><div style={S.mc} onClick={e => e.stopPropagation()}>
-      <h3 style={{ margin: "0 0 14px", fontSize: 15, fontWeight: 700 }}>환율 알림</h3>
+      <h3 style={{ margin: "0 0 14px", fontSize: 15, fontWeight: 700 }}>🔔 환율 알림</h3>
       <div style={{ marginBottom: 8 }}><label style={S.lb}>통화</label><select style={S.sel} value={f.currency} onChange={e => sF({ ...f, currency: e.target.value })}>{CURRENCIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}</select></div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
         <div><label style={S.lb}>조건</label><select style={S.sel} value={f.cond} onChange={e => sF({ ...f, cond: e.target.value })}><option value="below">이하</option><option value="above">이상</option></select></div>
