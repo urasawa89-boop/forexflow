@@ -42,8 +42,8 @@ export default function ToolsPage() {
   // ── 수입원가 계산기 (부대비용 포함) ──
   const CostCalc = () => {
     const [f, sF] = useState({
-      cur: "JPY", amount: "5000000", qty: "3000", unit: "kg", tariffRate: "20",
-      shipping: "500000", insurance: "50000", customs_fee: "150000", inspection: "100000", transport: "200000", storage: "100000", other: "0"
+      cur: "JPY", amount: "", qty: "", unit: "kg", tariffRate: "",
+      shipping: "", insurance: "", customs_fee: "", inspection: "", transport: "", storage: "", other: "0"
     })
 
     const cifKRW = toKRW(Number(f.amount) || 0, f.cur, rates[f.cur] || 0)
