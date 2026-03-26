@@ -1,6 +1,7 @@
 import Head from "next/head"
 import Link from "next/link"
-import guides from "../../data/guides.json"
+import { getGuideList } from "../../lib/notion"
+import fallbackGuides from "../../data/guides.json"
 
 const B = {
   orange: "#E8612D", orangeLight: "#F07A4A", orangeDim: "rgba(232,97,45,0.12)",
@@ -12,9 +13,25 @@ const catColors = {
   "관세": "#ffd666", "절차": "#42A5F5", "FTA": "#4CAF50", "실무팁": "#bb86fc",
 }
 
-export default function GuidePage() {
-  const published = guides.filter(g => g.published).sort((a, b) => new Date(b.date) - new Date(a.date))
+export async function getStaticProps() {
+  let guides = []
+  try {
+    guides = await getGuideList()
+  } catch (err) {
+    console.error("Notion fetch failed, using fallback:", err)
+  }
 
+  if (!guides || guides.length === 0) {
+    guides = fallbackGuides.filter(g => g.published)
+  }
+
+  return {
+    props: { guides },
+    revalidate: 60,
+  }
+}
+
+export default function GuidePage({ guides }) {
   return (
     <>
       <Head>
@@ -36,7 +53,7 @@ export default function GuidePage() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 14 }}>
-          {published.map(g => {
+          {guides.map(g => {
             const color = catColors[g.category] || B.orange
             return (
               <Link key={g.slug} href={`/guide/${g.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
@@ -54,7 +71,7 @@ export default function GuidePage() {
                       padding: "2px 8px", borderRadius: 10, fontWeight: 500,
                     }}>{g.category}</span>
                     <span style={{ fontSize: 10.5, color: B.textDimmer }}>{g.date}</span>
-                    <span style={{ fontSize: 10.5, color: B.textDimmer }}>· {g.readTime}분</span>
+                    {g.readTime > 0 && <span style={{ fontSize: 10.5, color: B.textDimmer }}>· {g.readTime}분</span>}
                   </div>
                   <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 8, color: B.text, lineHeight: 1.4 }}>
                     {g.title}
@@ -62,15 +79,17 @@ export default function GuidePage() {
                   <p style={{ fontSize: 12.5, color: B.textDim, lineHeight: 1.6, margin: 0 }}>
                     {g.description}
                   </p>
-                  <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
-                    {g.tags.slice(0, 4).map(tag => (
-                      <span key={tag} style={{
-                        fontSize: 10, color: B.textDim,
-                        background: "rgba(255,255,255,0.04)",
-                        padding: "2px 7px", borderRadius: 4,
-                      }}>#{tag}</span>
-                    ))}
-                  </div>
+                  {g.tags && g.tags.length > 0 && (
+                    <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+                      {g.tags.slice(0, 4).map(tag => (
+                        <span key={tag} style={{
+                          fontSize: 10, color: B.textDim,
+                          background: "rgba(255,255,255,0.04)",
+                          padding: "2px 7px", borderRadius: 4,
+                        }}>#{tag}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </Link>
             )
