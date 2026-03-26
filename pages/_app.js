@@ -2,34 +2,32 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-
 const B = {
   orange: "#E8612D",
   orangeDim: "rgba(232,97,45,0.12)",
   bgCardBorder: "rgba(255,255,255,0.07)",
   textDim: "rgba(232,228,223,0.45)",
+  textDimmer: "rgba(232,228,223,0.25)",
   headerBg: "#242D31",
 }
-
 function NavBar() {
   const router = useRouter()
   const path = router.pathname
   const mainTabs = [
-    { href: "/guide", label: "가이드" },
-    { href: "/about", label: "소개" },
     { href: "/", label: "대시보드", match: "/" },
     { href: "/products", label: "품목·관세", match: "/products" },
     { href: "/ocean", label: "해양정보", match: "/ocean" },
     { href: "/calculator", label: "계산기", match: "/calculator" },
     { href: "/docs", label: "수입서류", match: "/docs" },
     { href: "/tools", label: "수입도구", match: "/tools" },
+    { href: "/guide", label: "가이드", match: "/guide" },
+    { href: "/about", label: "소개", match: "/about" },
   ]
-
   const isActive = (tab) => {
-    if (tab.match === path) return true
+    if (tab.match === "/" && path === "/") return true
+    if (tab.match !== "/" && path.startsWith(tab.match)) return true
     return false
   }
-
   const nb = (a) => ({
     padding: "7px 14px",
     borderRadius: 7,
@@ -42,7 +40,6 @@ function NavBar() {
     textDecoration: "none",
     display: "inline-block",
   })
-
   return (
     <header style={{
       background: B.headerBg,
@@ -71,16 +68,42 @@ function NavBar() {
     </header>
   )
 }
-
+function Footer() {
+  return (
+    <footer style={{
+      borderTop: `1px solid ${B.bgCardBorder}`,
+      marginTop: 40,
+      padding: "20px 20px 28px",
+      textAlign: "center",
+    }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 10, flexWrap: "wrap" }}>
+        <Link href="/about" style={{ fontSize: 11.5, color: B.textDim, textDecoration: "none" }}>소개</Link>
+        <Link href="/guide" style={{ fontSize: 11.5, color: B.textDim, textDecoration: "none" }}>가이드</Link>
+        <Link href="/privacy" style={{ fontSize: 11.5, color: B.textDim, textDecoration: "none" }}>개인정보처리방침</Link>
+        <Link href="/contact" style={{ fontSize: 11.5, color: B.textDim, textDecoration: "none" }}>문의하기</Link>
+      </div>
+      <div style={{ fontSize: 10.5, color: B.textDimmer }}>
+        © 2026 Bay Works · bayworksindex.com · 수산물 수입 실무 도구
+      </div>
+    </footer>
+  )
+}
 export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Bay Works - West Coast Marine Supply</title>
-        <meta name="description" content="수출입 실시간 환율 · HS코드 관세율 · 해양정보 · 수입원가 계산" />
+        <title>Bay Works - 수산물 수입 실무 도구</title>
+        <meta name="description" content="수산물 수출입 실무자를 위한 올인원 도구. 실시간 환율, HS코드 관세율 조회, 수입원가 계산기, 수입서류 체크리스트." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23E8612D'/><text x='50' y='42' font-size='28' font-weight='900' text-anchor='middle' fill='white' font-family='Arial Black,Arial'>BAY</text><text x='50' y='72' font-size='22' font-weight='900' text-anchor='middle' fill='white' font-family='Arial Black,Arial'>WORKS</text></svg>" />
         <meta name="theme-color" content="#2B3539" />
+        <meta property="og:title" content="Bay Works - 수산물 수입 실무 도구" />
+        <meta property="og:description" content="수산물 수출입 실무자를 위한 올인원 도구. 실시간 환율, HS코드 관세율 조회, 수입원가 계산기." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://bayworksindex.com" />
+        <meta property="og:image" content="https://bayworksindex.com/logo.png" />
+        <meta property="og:locale" content="ko_KR" />
+        <meta name="robots" content="index, follow" />
       </Head>
       <style jsx global>{`
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -92,6 +115,7 @@ export default function App({ Component, pageProps }) {
       `}</style>
       <NavBar />
       <Component {...pageProps} />
+      <Footer />
     </>
   )
 }
