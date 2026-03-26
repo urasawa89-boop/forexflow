@@ -15,6 +15,8 @@ function NavBar() {
   const router = useRouter()
   const path = router.pathname
   const mainTabs = [
+    { href: "/guide", label: "가이드" },
+    { href: "/about", label: "소개" },
     { href: "/", label: "대시보드", match: "/" },
     { href: "/products", label: "품목·관세", match: "/products" },
     { href: "/ocean", label: "해양정보", match: "/ocean" },
