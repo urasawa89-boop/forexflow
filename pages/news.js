@@ -160,11 +160,7 @@ export default function NewsPage() {
         {!loading && filtered.length === 0 && <div style={{ textAlign: "center", padding: 30, color: "rgba(255,255,255,0.2)" }}>조건에 맞는 뉴스가 없습니다.</div>}
       </div>
 
-      {/* API 상태 안내 */}
-      <div style={{ ...S.c, marginTop: 16, padding: 12, fontSize: 11, color: "rgba(255,255,255,0.25)" }}>
-        💡 <strong>뉴스 자동수집 설정:</strong> <code style={{ color: "#ffd666" }}>pages/api/news.js</code>에서 네이버 API 키를 설정하면 수산물 관련 최신 뉴스가 자동 수집됩니다.
-        키 발급: <a href="https://developers.naver.com" target="_blank" rel="noopener noreferrer" style={{ color: "#03C75A" }}>developers.naver.com</a> → 애플리케이션 등록 → 검색 API 선택
-      </div>
+      
     </main>
   </div>
 }
