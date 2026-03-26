@@ -118,7 +118,6 @@ const OCEAN_STATIONS = [
   { code: "DT_0021", name: "서귀포", region: "남해" },
 ]
 
-// 시뮬레이션용 해양 데이터 (실제 배포시 바다누리 API 연동)
 function genOceanData() {
   return OCEAN_STATIONS.map(st => ({
     ...st,
