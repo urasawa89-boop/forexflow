@@ -565,12 +565,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
         </div>)}
       </div>
 
-      {oceanSource !== "live" && <div style={{ ...S.c, marginTop: 16, padding: 12, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
-        <strong>바다누리 API 연동:</strong> <a href="https://www.khoa.go.kr/oceangrid/khoa/takepart/openapi/openApiKey.do" target="_blank" rel="noopener noreferrer" style={{ color: "#F07A4A" }}>khoa.go.kr → OPEN API → 인증키 신청</a> (무료) 후 <code style={{ color: "#F07A4A" }}>pages/api/ocean.js</code>에 키를 입력하면 실시간 조위·수온·풍향풍속·기온 데이터로 전환됩니다.
-      </div>}
-      {oceanSource === "live" && <div style={{ ...S.c, marginTop: 16, padding: 12, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
-        <strong>국립해양조사원 실시간 관측 데이터</strong> · 조위관측소 15개소 · 5분마다 자동 갱신 · 출처: 바다누리 해양정보 서비스(khoa.go.kr)
-      </div>}
+    
     </div>
   }
 
