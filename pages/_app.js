@@ -92,6 +92,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
+    <meta name="naver-site-verification" content="9bcda1055bef0ab14e67b722d552bce05c82a10a" />
         <title>Bay Works - 수산물 수입 실무 도구</title>
         <meta name="description" content="수산물 수출입 실무자를 위한 올인원 도구. 실시간 환율, HS코드 관세율 조회, 수입원가 계산기, 수입서류 체크리스트." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
