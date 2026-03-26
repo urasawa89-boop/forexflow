@@ -301,7 +301,6 @@ export default function HomePage({ initialTab = "dashboard" }) {
 
   // ── Dashboard ──
   const Dash = () => <div>
-    <Ad pos="top" />
     {/* Detailed Exchange Rates */}
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
       <div style={S.secT}>수출입 환율</div>
@@ -455,7 +454,6 @@ export default function HomePage({ initialTab = "dashboard" }) {
       )}
     </div>
 
-    <Ad pos="bottom" />
   </div>
 
   // ── Products Tab (HS codes + Tariff) ──
