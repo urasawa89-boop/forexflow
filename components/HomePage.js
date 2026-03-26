@@ -143,7 +143,7 @@ function Spark({ data, color, w = 76, h = 26 }) {
   const mn = Math.min(...data), mx = Math.max(...data), rng = mx - mn || 1
   const pts = data.map((v, i) => `${(i / (data.length - 1)) * w},${h - ((v - mn) / rng) * (h - 4) - 2}`).join(" ")
   return <svg width={w} height={h}><polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-
+}
 
 
 
