@@ -202,8 +202,7 @@ export default function HomePage({ initialTab = "dashboard" }) {
   }, [rates])
 
   // ── 해양정보 fetch ──
-  // 실제 배포시 /api/ocean 서버 API 경유로 바다누리 API 호출
-  // 현재는 시뮬레이션 데이터 사용
+
   const fetchOcean = useCallback(async () => {
     try {
       const res = await fetch("/api/ocean")
