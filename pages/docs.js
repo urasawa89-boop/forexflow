@@ -135,7 +135,7 @@ export default function DocsPage() {
     <Head><title>수입서류 체크리스트 - Bay Works</title></Head>
 
     <main style={S.mn}>
-      <h1 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>📋 수산물 수입신고 서류 체크리스트</h1>
+      <h1 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}> 수산물 수입신고 서류 체크리스트</h1>
 
       {/* Category selector */}
       <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
@@ -191,7 +191,7 @@ export default function DocsPage() {
 
       {/* Useful sites */}
       <div style={S.c}>
-        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>🔗 수출입 관련 주요 사이트</div>
+        <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}> 수출입 관련 주요 사이트</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
           {USEFUL_SITES.map((s, i) => <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "rgba(255,255,255,0.015)", borderRadius: 8, padding: "10px 12px", border: "1px solid rgba(255,255,255,0.03)", textDecoration: "none" }}>
             <div style={{ fontSize: 12.5, fontWeight: 600, color: "#E8612D", marginBottom: 3 }}>{s.name}</div>
