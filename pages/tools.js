@@ -10,6 +10,55 @@ const CURRENCIES = [
 ]
 const FALLBACK = { USD: 1385.5, JPY: 921.0, CNY: 190.3, EUR: 1510.2 }
 
+// 품목 DB (HomePage.js와 동일)
+const SEAFOOD_DB = [
+  { id: "frozen_salmon", name: "냉동 연어", hs: "0303.14", tariff: 10, emoji: "🧊" },
+  { id: "frozen_tuna", name: "냉동 참치", hs: "0303.31", tariff: 10, emoji: "🧊" },
+  { id: "frozen_herring", name: "냉동 청어", hs: "0303.41", tariff: 10, emoji: "🧊" },
+  { id: "frozen_anchovy", name: "냉동 멸치", hs: "0303.42", tariff: 10, emoji: "🧊" },
+  { id: "frozen_sardine", name: "냉동 정어리", hs: "0303.43", tariff: 10, emoji: "🧊" },
+  { id: "frozen_mackerel", name: "냉동 고등어", hs: "0303.44", tariff: 10, emoji: "🧊" },
+  { id: "frozen_horsemackerel", name: "냉동 전갱이(메가리)", hs: "0303.49", tariff: 10, emoji: "🧊" },
+  { id: "frozen_cod", name: "냉동 대구", hs: "0303.63", tariff: 10, emoji: "🧊" },
+  { id: "frozen_pollock", name: "냉동 명태", hs: "0303.67", tariff: 10, emoji: "🧊" },
+  { id: "frozen_monkfish", name: "냉동 아귀", hs: "0303.89", tariff: 10, emoji: "🧊" },
+  { id: "frozen_kanari", name: "냉동 까나리", hs: "0303.89", tariff: 10, emoji: "🧊" },
+  { id: "frozen_lobster", name: "냉동 랍스터", hs: "0306.11", tariff: 20, emoji: "🦞" },
+  { id: "frozen_snow_crab", name: "냉동 대게", hs: "0306.12", tariff: 20, emoji: "🦀" },
+  { id: "frozen_blue_crab", name: "냉동 꽃게", hs: "0306.14", tariff: 20, emoji: "🦀" },
+  { id: "frozen_shrimp", name: "냉동 새우(흰다리)", hs: "0306.17", tariff: 20, emoji: "🦐" },
+  { id: "frozen_gonjeng", name: "냉동 곤쟁이(젓새우)", hs: "0306.19", tariff: 20, emoji: "🦐" },
+  { id: "squid_frozen", name: "냉동 오징어", hs: "0307.43", tariff: 10, emoji: "🦑" },
+  { id: "fillet_salmon_frozen", name: "연어 필레(냉동)", hs: "0304.81", tariff: 10, emoji: "🍣" },
+  { id: "live_trout", name: "활 송어", hs: "0301.11", tariff: 10, emoji: "🐟" },
+  { id: "live_eel", name: "활 장어(뱀장어)", hs: "0301.19", tariff: 10, emoji: "🐟" },
+  { id: "live_flatfish", name: "활 넙치(광어)", hs: "0301.99", tariff: 10, emoji: "🐟" },
+  { id: "fresh_salmon", name: "신선 연어", hs: "0302.14", tariff: 20, emoji: "🐟" },
+  { id: "fresh_tuna", name: "신선 참치", hs: "0302.31", tariff: 20, emoji: "🐟" },
+  { id: "fresh_mackerel", name: "신선 고등어", hs: "0302.44", tariff: 10, emoji: "🐟" },
+  { id: "fresh_cod", name: "신선 대구", hs: "0302.51", tariff: 20, emoji: "🐟" },
+  { id: "fresh_pollock", name: "신선 명태", hs: "0302.52", tariff: 20, emoji: "🐟" },
+  { id: "fillet_salmon", name: "연어 필레(신선)", hs: "0304.41", tariff: 20, emoji: "🍣" },
+  { id: "live_lobster", name: "활 랍스터", hs: "0306.31", tariff: 20, emoji: "🦞" },
+  { id: "live_snow_crab", name: "활 대게", hs: "0306.34", tariff: 20, emoji: "🦀" },
+  { id: "live_shrimp", name: "활 새우", hs: "0306.36", tariff: 20, emoji: "🦐" },
+  { id: "oyster_fresh", name: "활/신선 굴", hs: "0307.11", tariff: 20, emoji: "🦪" },
+  { id: "squid_fresh", name: "활/신선 오징어", hs: "0307.42", tariff: 10, emoji: "🦑" },
+  { id: "octopus_fresh", name: "활/신선 문어", hs: "0307.52", tariff: 20, emoji: "🐙" },
+  { id: "abalone_fresh", name: "활/신선 전복", hs: "0307.81", tariff: 20, emoji: "🐚" },
+  { id: "sea_cucumber", name: "활/신선 해삼", hs: "0308.11", tariff: 20, emoji: "🟤" },
+  { id: "fish_roe", name: "어란(명란 등)", hs: "0305.20", tariff: 20, emoji: "🟠" },
+  { id: "smoked_salmon", name: "훈제 연어", hs: "0305.41", tariff: 20, emoji: "🍣" },
+  { id: "dried_pollock", name: "건조 명태(황태/북어)", hs: "0305.59", tariff: 20, emoji: "🐡" },
+  { id: "miyeok", name: "미역", hs: "1212.21", tariff: 20, emoji: "🟢" },
+  { id: "dashima", name: "다시마", hs: "1212.21", tariff: 20, emoji: "🟢" },
+  { id: "kim", name: "김(마른김/조미김)", hs: "2008.99", tariff: 20, emoji: "🟢" },
+  { id: "canned_tuna", name: "참치캔", hs: "1604.14", tariff: 20, emoji: "🥫" },
+  { id: "prep_shrimp", name: "조제 새우", hs: "1605.21", tariff: 20, emoji: "🦐" },
+  { id: "prep_squid", name: "조제 오징어/문어", hs: "1605.54", tariff: 20, emoji: "🦑" },
+  { id: "custom", name: "직접 입력", hs: "-", tariff: 0, emoji: "✏️" },
+]
+
 function fmtKRW(n) { return "₩" + Math.round(n || 0).toLocaleString("ko-KR") }
 function fmtF(a, c) { return c === "JPY" ? "¥" + Math.round(a).toLocaleString() : (CURRENCIES.find(x => x.code === c)?.symbol || "") + Number(a).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }
 function toKRW(a, c, r) { return c === "JPY" ? (a / 100) * r : a * r }
@@ -28,7 +77,6 @@ export default function ToolsPage() {
 
   const S = {
     app: { fontFamily: "'Pretendard',sans-serif", background: "#2B3539", color: "#E8E4DF", minHeight: "100vh", fontSize: 14 },
-    hdr: { background: "#242D31", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 52, flexWrap: "wrap", gap: 8 },
     mn: { maxWidth: 1160, margin: "0 auto", padding: "16px 20px" },
     c: { background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 11, padding: 15 },
     inp: { width: "100%", padding: "8px 12px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)", color: "#E8E4DF", fontSize: 13, outline: "none", boxSizing: "border-box" },
@@ -39,13 +87,24 @@ export default function ToolsPage() {
     row: { display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: 12.5, borderBottom: "1px solid rgba(255,255,255,0.03)" },
   }
 
-  // ── 수입원가 계산기 (부대비용 포함) ──
+  // ── 수입원가 계산기 (품목 선택 + 부대비용) ──
   const CostCalc = () => {
     const [f, sF] = useState({
-      cur: "JPY", amount: "", qty: "", unit: "kg", tariffRate: "",
-      shipping: "", insurance: "", customs_fee: "", inspection: "", transport: "", storage: "", other: "0"
+      product: "frozen_shrimp", cur: "JPY", amount: "", qty: "", unit: "kg", tariffRate: "20",
+      shipping: "", insurance: "", customs_fee: "", inspection: "", transport: "", storage: "", other: ""
     })
 
+    // 품목 변경 시 관세율 자동 적용
+    const handleProductChange = (productId) => {
+      const prod = SEAFOOD_DB.find(p => p.id === productId)
+      if (prod && prod.id !== "custom") {
+        sF(prev => ({ ...prev, product: productId, tariffRate: String(prod.tariff) }))
+      } else {
+        sF(prev => ({ ...prev, product: productId }))
+      }
+    }
+
+    const selectedProd = SEAFOOD_DB.find(p => p.id === f.product)
     const cifKRW = toKRW(Number(f.amount) || 0, f.cur, rates[f.cur] || 0)
     const tariff = cifKRW * (Number(f.tariffRate) / 100)
     const subtaxBase = cifKRW + tariff
@@ -59,18 +118,44 @@ export default function ToolsPage() {
     const marginPrice30 = unitCost * 1.3
 
     return <div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
         {/* Input */}
         <div>
           <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 12 }}>📥 수입 기본 정보</div>
+
+          {/* 품목 선택 (신규 추가) */}
+          <div style={{ marginBottom: 10 }}>
+            <label style={S.lb}>품목 선택</label>
+            <select style={{ ...S.sel, borderColor: "rgba(232,97,45,0.3)" }} value={f.product} onChange={e => handleProductChange(e.target.value)}>
+              {SEAFOOD_DB.map(p => (
+                <option key={p.id} value={p.id}>
+                  {p.emoji} {p.name} {p.hs !== "-" ? `(HS:${p.hs} · 관세${p.tariff}%)` : ""}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 품목 정보 표시 */}
+          {selectedProd && selectedProd.id !== "custom" && (
+            <div style={{ background: "rgba(232,97,45,0.06)", borderRadius: 8, padding: "8px 12px", marginBottom: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>
+                {selectedProd.emoji} {selectedProd.name}
+              </span>
+              <span style={{ fontSize: 12 }}>
+                <code style={{ color: "#F07A4A", marginRight: 8 }}>HS {selectedProd.hs}</code>
+                <span style={{ color: selectedProd.tariff > 15 ? "#E8612D" : "#4CAF50", fontWeight: 700 }}>관세 {selectedProd.tariff}%</span>
+              </span>
+            </div>
+          )}
+
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
             <div><label style={S.lb}>통화</label><select style={S.sel} value={f.cur} onChange={e => sF({ ...f, cur: e.target.value })}>{CURRENCIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}</select></div>
-            <div><label style={S.lb}>수입금액 (외화)</label><input type="number" style={S.inp} value={f.amount} onChange={e => sF({ ...f, amount: e.target.value })} /></div>
+            <div><label style={S.lb}>수입금액 (외화)</label><input type="number" style={S.inp} value={f.amount} onChange={e => sF({ ...f, amount: e.target.value })} placeholder="금액 입력" /></div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 8 }}>
-            <div><label style={S.lb}>수량</label><input type="number" style={S.inp} value={f.qty} onChange={e => sF({ ...f, qty: e.target.value })} /></div>
+            <div><label style={S.lb}>수량</label><input type="number" style={S.inp} value={f.qty} onChange={e => sF({ ...f, qty: e.target.value })} placeholder="수량" /></div>
             <div><label style={S.lb}>단위</label><select style={S.sel} value={f.unit} onChange={e => sF({ ...f, unit: e.target.value })}><option>kg</option><option>box</option><option>ton</option><option>ea</option></select></div>
-            <div><label style={S.lb}>관세율 (%)</label><input type="number" style={S.inp} value={f.tariffRate} onChange={e => sF({ ...f, tariffRate: e.target.value })} /></div>
+            <div><label style={S.lb}>관세율 (%)</label><input type="number" style={{ ...S.inp, color: f.product !== "custom" ? "#E8612D" : "#E8E4DF", fontWeight: 600 }} value={f.tariffRate} onChange={e => sF({ ...f, tariffRate: e.target.value, product: "custom" })} /></div>
           </div>
 
           <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 10, marginTop: 16 }}>📦 부대비용 (원화)</div>
@@ -85,7 +170,7 @@ export default function ToolsPage() {
           ].map(([key, label, hint]) =>
             <div key={key} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 6, alignItems: "center" }}>
               <label style={{ fontSize: 11.5, color: "rgba(255,255,255,0.45)" }}>{label}<br /><span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{hint}</span></label>
-              <input type="number" style={S.inp} value={f[key]} onChange={e => sF({ ...f, [key]: e.target.value })} />
+              <input type="number" style={S.inp} value={f[key]} onChange={e => sF({ ...f, [key]: e.target.value })} placeholder="0" />
             </div>
           )}
         </div>
@@ -97,7 +182,7 @@ export default function ToolsPage() {
             <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>물품가격 (CIF 원화환산)</span><span style={{ fontWeight: 600 }}>{fmtKRW(cifKRW)}</span></div>
             <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>┗ 외화금액</span><span>{fmtF(Number(f.amount) || 0, f.cur)}</span></div>
             <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>┗ 적용환율</span><span>{rates[f.cur]}</span></div>
-            <div style={{ ...S.row, borderBottom: "2px solid rgba(255,255,255,0.07)" }}><span style={{ color: "#ff8c00" }}>관세 ({f.tariffRate}%)</span><span style={{ color: "#ff8c00", fontWeight: 600 }}>+ {fmtKRW(tariff)}</span></div>
+            <div style={{ ...S.row, borderBottom: "2px solid rgba(255,255,255,0.07)" }}><span style={{ color: "#ff8c00" }}>관세 ({f.tariffRate || 0}%)</span><span style={{ color: "#ff8c00", fontWeight: 600 }}>+ {fmtKRW(tariff)}</span></div>
             <div style={S.row}><span style={{ color: "#ff8c00" }}>부가세 (10%)</span><span style={{ color: "#ff8c00" }}>+ {fmtKRW(vat)}</span></div>
             <div style={{ ...S.row, borderBottom: "2px solid rgba(255,255,255,0.07)" }}><span style={{ fontWeight: 600 }}>세금 소계</span><span style={{ fontWeight: 600 }}>{fmtKRW(totalDuty)}</span></div>
 
@@ -107,7 +192,6 @@ export default function ToolsPage() {
             <div style={S.row}><span style={{ color: "rgba(232,228,223,0.45)" }}>부대비용 소계</span><span>{fmtKRW(extras)}</span></div>
           </div>
 
-          {/* Total */}
           <div style={{ background: "rgba(232,97,45,0.08)", borderRadius: 10, padding: 16, textAlign: "center", marginBottom: 12 }}>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginBottom: 4 }}>총 수입원가</div>
             <div style={{ fontSize: 26, fontWeight: 800, color: "#E8612D" }}>{fmtKRW(totalCost)}</div>
@@ -121,7 +205,6 @@ export default function ToolsPage() {
             </div>
           </div>
 
-          {/* Cost breakdown chart */}
           <div style={{ background: "rgba(255,255,255,0.015)", borderRadius: 10, padding: 14 }}>
             <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8 }}>비용 구성 비율</div>
             {[["물품가격", cifKRW, "#E8612D"], ["관세+부가세", totalDuty, "#ff8c00"], ["부대비용", extras, "#bb86fc"]].map(([l, v, c]) =>
@@ -199,28 +282,27 @@ Generated by Bay Works · ${new Date().toLocaleString("ko-KR")}
     }
 
     return <div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 8, marginBottom: 12 }}>
         <div><label style={S.lb}>수출자 (Seller)</label><input style={S.inp} value={q.sellerName} onChange={e => sQ({ ...q, sellerName: e.target.value })} placeholder="회사명" /></div>
         <div><label style={S.lb}>수입자 (Buyer)</label><input style={S.inp} value={q.buyerName} onChange={e => sQ({ ...q, buyerName: e.target.value })} placeholder="거래처명" /></div>
         <div><label style={S.lb}>통화</label><select style={S.sel} value={q.cur} onChange={e => sQ({ ...q, cur: e.target.value })}>{CURRENCIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}</select></div>
         <div><label style={S.lb}>견적일</label><input type="date" style={S.inp} value={q.date} onChange={e => sQ({ ...q, date: e.target.value })} /></div>
       </div>
 
-      {/* Items */}
       <div style={{ ...S.c, marginBottom: 12 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 8 }}>
           <span style={{ fontSize: 13, fontWeight: 700 }}>품목 내역</span>
           <button style={S.btn} onClick={addItem}>+ 품목 추가</button>
         </div>
         <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 4px" }}>
+        <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 4px", minWidth: 600 }}>
           <thead><tr>
             <th style={{ textAlign: "left", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>품목명</th>
             <th style={{ textAlign: "center", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>수량</th>
             <th style={{ textAlign: "center", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>단위</th>
             <th style={{ textAlign: "center", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>단가(외화)</th>
-            <th style={{ textAlign: "right", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>소계(외화)</th>
-            <th style={{ textAlign: "right", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>원화 환산</th>
+            <th style={{ textAlign: "right", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>소계</th>
+            <th style={{ textAlign: "right", padding: "6px 8px", fontSize: 10.5, color: "rgba(255,255,255,0.3)" }}>원화</th>
             <th style={{ width: 40 }}></th>
           </tr></thead>
           <tbody>{q.items.map((it, i) => {
@@ -231,8 +313,8 @@ Generated by Bay Works · ${new Date().toLocaleString("ko-KR")}
               <td style={{ padding: 3, width: 80 }}><input type="number" style={{ ...S.inp, fontSize: 12, textAlign: "center" }} value={it.qty} onChange={e => updateItem(i, "qty", e.target.value)} /></td>
               <td style={{ padding: 3, width: 70 }}><select style={{ ...S.sel, fontSize: 12 }} value={it.unit} onChange={e => updateItem(i, "unit", e.target.value)}><option>kg</option><option>box</option><option>ton</option><option>ea</option></select></td>
               <td style={{ padding: 3, width: 100 }}><input type="number" style={{ ...S.inp, fontSize: 12, textAlign: "right" }} value={it.price} onChange={e => updateItem(i, "price", e.target.value)} /></td>
-              <td style={{ padding: "3px 8px", fontSize: 12, textAlign: "right", fontWeight: 600 }}>{fmtF(amt, q.cur)}</td>
-              <td style={{ padding: "3px 8px", fontSize: 12, textAlign: "right", color: "#E8612D" }}>{fmtKRW(krw)}</td>
+              <td style={{ padding: "3px 8px", fontSize: 12, textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>{fmtF(amt, q.cur)}</td>
+              <td style={{ padding: "3px 8px", fontSize: 12, textAlign: "right", color: "#E8612D", whiteSpace: "nowrap" }}>{fmtKRW(krw)}</td>
               <td style={{ padding: 3 }}>{q.items.length > 1 && <button onClick={() => removeItem(i)} style={{ background: "rgba(255,50,50,0.1)", border: "none", color: "#ff5050", borderRadius: 4, cursor: "pointer", padding: "2px 6px", fontSize: 11 }}>✕</button>}</td>
             </tr>
           })}</tbody>
@@ -240,17 +322,16 @@ Generated by Bay Works · ${new Date().toLocaleString("ko-KR")}
         </div>
       </div>
 
-      {/* Total + Print */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
         <div>
           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>적용환율: {rates[q.cur]} {src === "live" ? "🟢 실시간" : "🟡 시뮬레이션"}</div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           <div style={{ textAlign: "right" }}>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>합계</div>
             <div style={{ fontSize: 18, fontWeight: 800 }}>{fmtF(totalForeign, q.cur)} = <span style={{ color: "#E8612D" }}>{fmtKRW(totalKRW)}</span></div>
           </div>
-          <button style={{ ...S.btn, padding: "12px 24px" }} onClick={printQuote}>🖨️ 견적서 인쇄/PDF</button>
+          <button style={{ ...S.btn, padding: "12px 24px" }} onClick={printQuote}>🖨️ 견적서 PDF</button>
         </div>
       </div>
     </div>
@@ -258,7 +339,7 @@ Generated by Bay Works · ${new Date().toLocaleString("ko-KR")}
 
   return <div style={S.app}>
     <Head><title>수입원가 계산기 · 견적서 - Bay Works</title></Head>
-    <div style={{ display: "flex", justifyContent: "center", gap: 4, padding: "8px 20px", borderBottom: `1px solid rgba(255,255,255,0.07)` }}>
+    <div style={{ display: "flex", justifyContent: "center", gap: 4, padding: "8px 20px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
       <button style={S.bo(tab === "cost")} onClick={() => setTab("cost")}>수입원가 계산기</button>
       <button style={S.bo(tab === "quote")} onClick={() => setTab("quote")}>환율 견적서</button>
     </div>
