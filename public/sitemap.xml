@@ -2,7 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bayworksindex.com/</loc>
-    <lastmod>2026-03-25</lastmod>
+    <lastmod>2026-03-31</lastmod>
     <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://bayworksindex.com/tools</loc>
+    <lastmod>2026-03-31</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://bayworksindex.com/guides</loc>
+    <lastmod>2026-03-31</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://bayworksindex.com/about</loc>
+    <lastmod>2026-03-31</lastmod>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://bayworksindex.com/contact</loc>
+    <lastmod>2026-03-31</lastmod>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://bayworksindex.com/privacy</loc>
+    <lastmod>2026-03-31</lastmod>
+    <priority>0.40</lastmod>
   </url>
 </urlset>
